@@ -31,8 +31,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-//    implementation 'io.mapwize.sdk:mapwize-sdk:3.1.1'
-
+    implementation 'com.google.android.material:material:1.1.0-beta02'
 
     implementation("io.mapwize.sdk:mapwize-sdk:3.1.2") {
         transitive = true
