@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_navdrawer_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/bookmarks"
+            android:icon="@drawable/ic_navdrawer_bookmark"
+            android:title="Bookmarks" />
+        <item
+            android:id="@+id/schedules"
+            android:icon="@drawable/ic_navdrawer_schedule"
+            android:title="Schedules" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_navdrawer_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/privacy"
+            android:icon="@drawable/ic_navdrawer_privacy"
+            android:title="Privacy Policy" />
+        <item
+            android:id="@+id/help"
+            android:icon="@drawable/ic_navdrawer_help"
+            android:title="Help and Feedback" />
+    </group>
+
+</menu>
