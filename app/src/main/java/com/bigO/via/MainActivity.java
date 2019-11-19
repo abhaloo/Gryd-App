@@ -1,24 +1,31 @@
 package com.bigO.via;
 
+import java.util.List;
+import java.util.Locale;
+
+import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
-
-import android.os.Bundle;
 import android.view.MenuItem;
-
 import com.google.android.material.navigation.NavigationView;
 
 import io.mapwize.mapwizesdk.core.MapwizeConfiguration;
+import io.mapwize.mapwizesdk.api.Floor;
+import io.mapwize.mapwizesdk.api.MapwizeObject;
+import io.mapwize.mapwizesdk.map.MapOptions;
+import io.mapwize.mapwizesdk.map.MapwizeMap;
+import io.mapwize.mapwizeui.MapwizeFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapwizeFragment.OnFragmentInteractionListener {
 
     private DrawerLayout drawer;
+    private MapwizeFragment mapwizeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         MapwizeConfiguration config = new MapwizeConfiguration.Builder(this, "82a148cb703ba7fc2f0e50bbb3e31902").build();
         MapwizeConfiguration.start(config);
+
+        MapOptions opts = new MapOptions.Builder()
+            .language(Locale.getDefault().getLanguage())
+            .build();
+        mapwizeFragment = MapwizeFragment.newInstance(opts);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,20 +61,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment selectedFragment;
+        String tag = "";
         switch (item.getItemId()){
-            case R.id.home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            case R.id.search:
+                selectedFragment = mapwizeFragment;
                 break;
             case R.id.bookmarks:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BookmarksFragment()).commit();
+                selectedFragment = new BookmarksFragment();
                 break;
             case R.id.schedules:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SchedulesFragment()).commit();
+                selectedFragment = new SchedulesFragment();
+                break;
+            case R.id.settings:
+                selectedFragment = new SettingsFragment();
+                break;
+            case R.id.privacy_policy:
+                selectedFragment = new PrivacyPolicyFragment();
+                break;
+            case R.id.help_and_feedback:
+                selectedFragment = new HelpAndFeedbackFragment();
+                break;
+            default:
+                selectedFragment = new HomeFragment();
+                tag = "HOME";
                 break;
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, tag).commit();
 
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
@@ -72,7 +99,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            super.onBackPressed();
+            Fragment myFragment = getSupportFragmentManager().findFragmentByTag("HOME");
+            if (myFragment != null && myFragment.isVisible()) {
+                super.onBackPressed();
+            }
+            else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "HOME").commit();
+            }
         }
     }
+
+    @Override
+    public void onMenuButtonClick(){}
+
+    @Override
+    public void onInformationButtonClick(MapwizeObject mapwizeObject){
+    }
+
+    @Override
+    public void onFragmentReady(MapwizeMap mapwizeMap){}
+
+    @Override
+    public void onFollowUserButtonClickWithoutLocation(){}
+
+    @Override
+    public boolean shouldDisplayInformationButton(MapwizeObject mapwizeObject) {
+        return true;
+    }
+
+    @Override
+    public boolean shouldDisplayFloorController(List<Floor> floors) {
+        return false;
+    }
+
 }

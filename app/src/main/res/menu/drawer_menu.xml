@@ -9,28 +9,30 @@
             android:icon="@drawable/ic_navdrawer_home"
             android:title="Home" />
         <item
+            android:id="@+id/search"
+            android:icon="@drawable/ic_search"
+            android:title="Search" />
+        <item
             android:id="@+id/bookmarks"
-            android:icon="@drawable/ic_navdrawer_bookmark"
+            android:icon="@drawable/ic_navdrawer_bookmarks"
             android:title="Bookmarks" />
         <item
             android:id="@+id/schedules"
-            android:icon="@drawable/ic_navdrawer_schedule"
+            android:icon="@drawable/ic_navdrawer_schedules"
             android:title="Schedules" />
-    </group>
-
-    <group android:checkableBehavior="single">
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_navdrawer_settings"
             android:title="Settings" />
         <item
-            android:id="@+id/privacy"
+            android:id="@+id/privacy_policy"
             android:icon="@drawable/ic_navdrawer_privacy"
             android:title="Privacy Policy" />
         <item
-            android:id="@+id/help"
+            android:id="@+id/help_and_feedback"
             android:icon="@drawable/ic_navdrawer_help"
             android:title="Help and Feedback" />
     </group>
+
 
 </menu>

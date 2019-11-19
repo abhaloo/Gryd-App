@@ -11,6 +11,11 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
+
+import io.mapwize.mapwizesdk.map.MapOptions;
+import io.mapwize.mapwizeui.MapwizeFragment;
+
 public class HomeFragment extends Fragment {
 
     @Nullable
@@ -18,24 +23,34 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ImageButton search_button = (ImageButton) view.findViewById(R.id.search_button);
 
-        search_button.setOnClickListener(new View.OnClickListener()
-        {
+        ImageButton logo_button = (ImageButton) view.findViewById(R.id.logo);
+        logo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { goToEventHandler(v); }
+        });
+
+        ImageButton search_button = (ImageButton) view.findViewById(R.id.search_button);
+        search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { searchHandler(v); }
         });
+
 
         return view;
     }
 
     /** Called when the user touches the search button */
     public void searchHandler(View view) {
+//        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+    }
+
+    /** Called when the user touches the search button */
+    public void goToEventHandler(View view) {
         // Do something in response to search click
-        Intent eventMapIntend;
-        eventMapIntend = new Intent(HomeFragment.this.getActivity(), EventMapActivity.class);
-        this.startActivity(eventMapIntend)
-         ;
+        Intent eventMapIntent;
+        eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventMapActivity.class);
+        this.startActivity(eventMapIntent);
     }
 
 
