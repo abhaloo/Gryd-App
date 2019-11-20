@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
         // Do something in response to search click
         Intent eventMapIntent;
         eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventMapActivity.class);
+
         this.startActivity(eventMapIntent);
     }
 
