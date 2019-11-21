@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
 import io.indoorlocation.core.IndoorLocation;
 
+import io.mapwize.mapwizesdk.api.Venue;
 import io.mapwize.mapwizesdk.core.MapwizeConfiguration;
 
 
@@ -35,14 +37,13 @@ import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapwizeFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapwizeFragment.OnFragmentInteractionListener, MapwizeMap.OnVenueEnterListener{
 
     private DrawerLayout drawer;
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_ACCESS_FINE_LOCATION);
         }
 
-//        Log.i("Debug", "onFragmentReady");
-
         this.mapwizeMap = mapwizeMap;
         GPSIndoorLocationProvider gpsIndoorLocationProvider = new GPSIndoorLocationProvider(mapwizeFragment.getContext());
         gpsIndoorLocationProvider.start();
@@ -165,5 +164,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean shouldDisplayFloorController(List<Floor> floors) {
         return false;
     }
-    
+
+
+    @Override
+    public void onVenueEnter(@NonNull Venue venue) {
+
+        Log.d("Debug","OnVenueEnter");
+
+        Intent eventMapIntent = new Intent(this, EventMapActivity.class);
+        this.startActivity(eventMapIntent);
+
+    }
+
+    @Override
+    public void onVenueWillEnter(@NonNull Venue venue) {
+        Log.d("Debug","OnVenueWillEnter");
+        Intent eventMapIntent = new Intent(mapwizeFragment.getContext(), EventMapActivity.class);
+        this.startActivity(eventMapIntent);
+
+
+    }
+
 }

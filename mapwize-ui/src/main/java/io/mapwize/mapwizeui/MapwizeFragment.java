@@ -2,6 +2,7 @@ package io.mapwize.mapwizeui;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -710,6 +711,9 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
         if (initializePlace != null) {
             selectPlace(initializePlace, false);
             initializePlace = null;
+//            Intent eventMapIntent;
+//            eventMapIntent = new Intent(MapwizeFragment.this.getActivity(), EventMapActivity.class);
+//            this.startActivity(eventMapIntent);
         }
     }
 
