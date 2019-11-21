@@ -178,10 +178,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onVenueWillEnter(@NonNull Venue venue) {
+
         Log.d("Debug","OnVenueWillEnter");
+
         Intent eventMapIntent = new Intent(mapwizeFragment.getContext(), EventMapActivity.class);
         this.startActivity(eventMapIntent);
-
 
     }
 
