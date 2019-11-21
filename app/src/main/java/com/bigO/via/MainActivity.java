@@ -41,6 +41,7 @@ import io.mapwize.mapwizeui.MapwizeFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapwizeFragment.OnFragmentInteractionListener {
 
     private DrawerLayout drawer;
+
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(mapwizeFragment)).commit();
             navigationView.setCheckedItem(R.id.home);
         }
 
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 selectedFragment = new HelpAndFeedbackFragment();
                 break;
             default:
-                selectedFragment = new HomeFragment();
+                selectedFragment = new HomeFragment(mapwizeFragment);
                 tag = "HOME";
                 break;
         }
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 super.onBackPressed();
             }
             else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "HOME").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(mapwizeFragment), "HOME").commit();
             }
         }
     }
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onFollowUserButtonClickWithoutLocation(){
-        Log.i("Debug", "onFollowUserButtonClickWithoutLocation");
+        Log.i("Debug", "onFollowUserButtonClickWithoutLocation search");
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
     }
 
@@ -168,5 +169,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean shouldDisplayFloorController(List<Floor> floors) {
         return false;
     }
-
+    
 }
