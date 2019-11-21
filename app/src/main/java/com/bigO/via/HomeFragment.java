@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.Locale;
 
 import io.mapwize.mapwizesdk.map.MapOptions;
@@ -52,6 +54,8 @@ public class HomeFragment extends Fragment {
     /** Called when the user touches the search button */
     public void searchHandler(View view) {
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+        NavigationView navigationView = this.getActivity().findViewById(R.id.navigationView);
+        navigationView.setCheckedItem(R.id.search);
     }
 
     /** Called when the user touches the search button */
