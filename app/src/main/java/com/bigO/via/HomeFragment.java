@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Locale;
 
@@ -17,6 +20,12 @@ import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
 public class HomeFragment extends Fragment {
+
+    private MapwizeFragment mapwizeFragment;
+
+    public HomeFragment(MapwizeFragment mapwizeFragment) {
+        this.mapwizeFragment = mapwizeFragment;
+    }
 
     @Nullable
     @Override
@@ -42,7 +51,7 @@ public class HomeFragment extends Fragment {
 
     /** Called when the user touches the search button */
     public void searchHandler(View view) {
-//        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
     }
 
     /** Called when the user touches the search button */
@@ -54,6 +63,10 @@ public class HomeFragment extends Fragment {
         this.startActivity(eventMapIntent);
     }
 
+    public void onActivityCreated (Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
 
 
 

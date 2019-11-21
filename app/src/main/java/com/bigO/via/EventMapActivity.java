@@ -21,11 +21,9 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
-import io.indoorlocation.core.IndoorLocation;
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
 import io.mapwize.mapwizesdk.api.Floor;
 import io.mapwize.mapwizesdk.api.MapwizeObject;
-import io.mapwize.mapwizesdk.core.MapwizeConfiguration;
 import io.mapwize.mapwizesdk.map.FollowUserMode;
 import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizesdk.map.MapwizeMap;
@@ -119,7 +117,8 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
 
     @Override
     public void onFollowUserButtonClickWithoutLocation(){
-        Log.i("Debug", "onFollowUserButtonClickWithoutLocation");
+        Log.i("Debug", "onFollowUserButtonClickWithoutLocation event");
+//
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
     }
