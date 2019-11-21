@@ -39,7 +39,7 @@ dependencies {
     implementation("io.mapwize.sdk:mapwize-sdk:3.1.2") {
         transitive = true
     }
-    implementation 'com.github.Mapwize:mapwize-ui-android:2.0.4'
+    implementation project(path: ':mapwize-ui')
 
     implementation 'com.github.indoorlocation:gps-indoor-location-provider-android:1.0.4'
 
