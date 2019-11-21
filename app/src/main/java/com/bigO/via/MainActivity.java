@@ -24,9 +24,6 @@ import com.mapbox.mapboxsdk.Mapbox;
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
 import io.indoorlocation.core.IndoorLocation;
 
-
-//import io.mapwize.mapwizeformapbox.MapwizePlugin;
-
 import io.mapwize.mapwizesdk.core.MapwizeConfiguration;
 
 
@@ -143,13 +140,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_ACCESS_FINE_LOCATION);
         }
 
-        Log.i("Debug", "onFragmentReady");
+//        Log.i("Debug", "onFragmentReady");
 
         this.mapwizeMap = mapwizeMap;
         GPSIndoorLocationProvider gpsIndoorLocationProvider = new GPSIndoorLocationProvider(mapwizeFragment.getContext());
         gpsIndoorLocationProvider.start();
         this.mapwizeMap.setIndoorLocationProvider(gpsIndoorLocationProvider);
-
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
     }
 

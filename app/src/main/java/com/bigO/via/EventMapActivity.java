@@ -17,6 +17,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import io.indoorlocation.core.IndoorLocation;
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
@@ -34,6 +37,13 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
 
+    private static final LatLng BOUND_CORNER_NW = new LatLng(51.081225, -114.137252);
+    private static final LatLng BOUND_CORNER_SE = new LatLng(51.079512, -114.134987);
+    private static final LatLngBounds RESTRICTED_BOUNDS_AREA = new LatLngBounds.Builder()
+            .include(BOUND_CORNER_NW)
+            .include(BOUND_CORNER_SE)
+            .build();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +55,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
         MapOptions opts = new MapOptions.Builder()
             .language(Locale.getDefault().getLanguage())
             .centerOnVenue("5d86c0b3b2f753001620538d")
-//            .restrictContentToVenueId("5d86c0b3b2f753001620538d")
+            .restrictContentToVenueId("5d86c0b3b2f753001620538d")
             .build();
         mapwizeFragment = MapwizeFragment.newInstance(opts);
 
@@ -93,22 +103,23 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_ACCESS_FINE_LOCATION);
         }
 
-
         this.mapwizeMap = mapwizeMap;
         GPSIndoorLocationProvider gpsIndoorLocationProvider = new GPSIndoorLocationProvider(this);
         gpsIndoorLocationProvider.start();
 
         this.mapwizeMap.setIndoorLocationProvider(gpsIndoorLocationProvider);
-
+        MapboxMap mapboxMap = this.mapwizeMap.getMapboxMap();
+        mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
+        mapboxMap.setMinZoomPreference(17.1);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
+//        this.mapwizeMap.grantAccess("82a148cb703ba7fc2f0e50bbb3e31902", );
 
     }
 
     @Override
     public void onFollowUserButtonClickWithoutLocation(){
         Log.i("Debug", "onFollowUserButtonClickWithoutLocation");
-//
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
     }
