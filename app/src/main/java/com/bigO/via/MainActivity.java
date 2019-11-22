@@ -23,7 +23,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
-import io.indoorlocation.core.IndoorLocation;
 
 import io.mapwize.mapwizesdk.api.Venue;
 import io.mapwize.mapwizesdk.core.MapwizeConfiguration;
