@@ -36,7 +36,9 @@ import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MapwizeFragment.OnFragmentInteractionListener, MapwizeMap.OnVenueEnterListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        MapwizeFragment.OnFragmentInteractionListener,
+        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener{
 
     private DrawerLayout drawer;
 
@@ -144,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mapwizeMap = mapwizeMap;
         GPSIndoorLocationProvider gpsIndoorLocationProvider = new GPSIndoorLocationProvider(mapwizeFragment.getContext());
         gpsIndoorLocationProvider.start();
+        mapwizeMap.addOnVenueEnterListener(this);
+        mapwizeMap.addOnVenueExitListener(this);
         this.mapwizeMap.setIndoorLocationProvider(gpsIndoorLocationProvider);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
     }
@@ -170,8 +174,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.d("Debug","OnVenueEnter");
 
-        Intent eventMapIntent = new Intent(this, EventMapActivity.class);
-        this.startActivity(eventMapIntent);
+//        Intent eventMapIntent = new Intent(this, EventMapActivity.class);
+//        this.startActivity(eventMapIntent);
 
     }
 
@@ -180,8 +184,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.d("Debug","OnVenueWillEnter");
 
-        Intent eventMapIntent = new Intent(mapwizeFragment.getContext(), EventMapActivity.class);
-        this.startActivity(eventMapIntent);
+//        Intent eventMapIntent = new Intent(mapwizeFragment.getContext(), EventMapActivity.class);
+//        this.startActivity(eventMapIntent);
+
+    }
+
+    @Override
+    public void onVenueExit(@NonNull Venue venue) {
+
+        Log.d("Debug","OnVenueExit");
 
     }
 

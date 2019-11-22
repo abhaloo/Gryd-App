@@ -53,7 +53,6 @@ import io.mapwize.mapwizesdk.map.VenuePreview;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class MapwizeFragment extends Fragment implements CompassView.OnCompassClickListener,
         SearchBarView.SearchBarListener, SearchDirectionView.SearchDirectionListener,
-        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener,
         BottomCardView.BottomCardListener, FollowUserButton.FollowUserButtonListener {
 
     private static String ARG_OPTIONS = "param_options";
@@ -426,8 +425,8 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
                     break;
             }
         });
-        mapwizeMap.addOnVenueEnterListener(this);
-        mapwizeMap.addOnVenueExitListener(this);
+//        mapwizeMap.addOnVenueEnterListener(this);
+//        mapwizeMap.addOnVenueExitListener(this);
     }
 
     /**
@@ -698,29 +697,29 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
     }
 
     // Mapwize listener
-    @Override
-    public void onVenueExit(@NonNull Venue venue) {
-        if (mapwizeMap.getDirection() == null) {
-            unselectContent();
-        }
-    }
-
-    @Override
-    public void onVenueEnter(@NonNull Venue venue) {
-        bottomCardView.setContent(venue, mapwizeMap.getLanguage());
-        if (initializePlace != null) {
-            selectPlace(initializePlace, false);
-            initializePlace = null;
-//            Intent eventMapIntent;
-//            eventMapIntent = new Intent(MapwizeFragment.this.getActivity(), EventMapActivity.class);
-//            this.startActivity(eventMapIntent);
-        }
-    }
-
-    @Override
-    public void onVenueWillEnter(@NonNull Venue venue) {
-
-    }
+//    @Override
+//    public void onVenueExit(@NonNull Venue venue) {
+//        if (mapwizeMap.getDirection() == null) {
+//            unselectContent();
+//        }
+//    }
+//
+//    @Override
+//    public void onVenueEnter(@NonNull Venue venue) {
+//        bottomCardView.setContent(venue, mapwizeMap.getLanguage());
+//        if (initializePlace != null) {
+//            selectPlace(initializePlace, false);
+//            initializePlace = null;
+////            Intent eventMapIntent;
+////            eventMapIntent = new Intent(MapwizeFragment.this.getActivity(), EventMapActivity.class);
+////            this.startActivity(eventMapIntent);
+//        }
+//    }
+//
+//    @Override
+//    public void onVenueWillEnter(@NonNull Venue venue) {
+//
+//    }
 
     @Override
     public void onFollowUserClickWithoutLocation() {
