@@ -35,8 +35,8 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
 
-    private static final LatLng BOUND_CORNER_NW = new LatLng(51.081225, -114.137252);
-    private static final LatLng BOUND_CORNER_SE = new LatLng(51.079512, -114.134987);
+    private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
+    private static final LatLng BOUND_CORNER_SE = new LatLng(51.079485532515136, -114.13504242897035);
     private static final LatLngBounds RESTRICTED_BOUNDS_AREA = new LatLngBounds.Builder()
             .include(BOUND_CORNER_NW)
             .include(BOUND_CORNER_SE)
@@ -108,7 +108,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
         this.mapwizeMap.setIndoorLocationProvider(gpsIndoorLocationProvider);
         MapboxMap mapboxMap = this.mapwizeMap.getMapboxMap();
         mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
-        mapboxMap.setMinZoomPreference(17.1);
+        mapboxMap.setMinZoomPreference(16);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
 //        this.mapwizeMap.grantAccess("82a148cb703ba7fc2f0e50bbb3e31902", );

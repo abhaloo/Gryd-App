@@ -785,4 +785,10 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
             return true;
         }
     }
+
+    public interface OnVenueEnterListener {
+        void onVenueExit(@NonNull Venue venue);
+        void onVenueEnter(@NonNull Venue venue);
+        void onVenueWillEnter(@NonNull Venue venue);
+    }
 }
