@@ -1,9 +1,12 @@
 package com.bigO.via;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,16 +17,26 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
+import org.json.JSONObject;
+
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
+import io.mapwize.mapwizesdk.api.ApiCallback;
+import io.mapwize.mapwizesdk.api.ApiFilter;
 import io.mapwize.mapwizesdk.api.Floor;
 import io.mapwize.mapwizesdk.api.MapwizeObject;
+import io.mapwize.mapwizesdk.api.Place;
 import io.mapwize.mapwizesdk.map.FollowUserMode;
 import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizesdk.map.MapwizeMap;
@@ -34,6 +47,9 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
+    private final String venID = "5d86c0b3b2f753001620538d";
+
+    ArrayList<PlaceData> places;
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
     private static final LatLng BOUND_CORNER_SE = new LatLng(51.079485532515136, -114.13504242897035);
@@ -45,6 +61,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_event_map);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
@@ -71,7 +88,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
                     Fragment selectedFragment;
                     switch (item.getItemId()) {
                         case R.id.list_view:
-                            selectedFragment = new EventListViewFragment();
+                            selectedFragment = new EventListViewFragment(places);
                             break;
                         case R.id.schedule_view:
                             selectedFragment = new EventScheduleViewFragment();
@@ -111,7 +128,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
         mapboxMap.setMinZoomPreference(16);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
-//        this.mapwizeMap.grantAccess("82a148cb703ba7fc2f0e50bbb3e31902", );
+        getPlaces();
 
     }
 
@@ -132,5 +149,33 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     public boolean shouldDisplayFloorController(List<Floor> floors) {
         return false;
     }
+
+    public void getPlaces() {
+        ApiFilter apiFilter = new ApiFilter.Builder().venueId(venID).build();
+        mapwizeMap.getMapwizeApi().getPlaces(apiFilter, new ApiCallback<List<Place>>() {
+            @Override
+            public void onSuccess(List<Place> venplaces) {
+                places = new ArrayList<>();
+                for(Place place: venplaces) {
+//                    places.add(place.getName());
+
+                    String name = place.getName();
+                    Bitmap icon = place.getIcon();
+                    JSONObject placeData = place.getData();
+
+                    PlaceData newPlace = new PlaceData(name,placeData,icon);
+
+                    places.add(newPlace);
+
+
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.i("Debug", "Could not get the event list!");
+            }
+        });
+    }
+
 
 }
