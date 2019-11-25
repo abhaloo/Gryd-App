@@ -24,12 +24,14 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
 import io.mapwize.mapwizesdk.api.Floor;
 import io.mapwize.mapwizesdk.api.MapwizeObject;
+import io.mapwize.mapwizesdk.api.Venue;
 import io.mapwize.mapwizesdk.map.FollowUserMode;
 import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
-public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener {
+public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener,
+        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener {
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
@@ -90,6 +92,33 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
 
     @Override
     public void onInformationButtonClick(MapwizeObject mapwizeObject){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(mapwizeFragment)
+                .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, new EventPlaceHighlightFragment(), "HIGHLIGHT")
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Fragment eventPlaceHighlightFragment = getSupportFragmentManager().findFragmentByTag("HIGHLIGHT");
+        if (eventPlaceHighlightFragment != null && eventPlaceHighlightFragment.isVisible()) {
+            getSupportFragmentManager()
+                .beginTransaction()
+                .remove(eventPlaceHighlightFragment)
+                .commit();
+            getSupportFragmentManager()
+                .beginTransaction()
+                .show(mapwizeFragment)
+                .commit();
+        }
+        else {
+
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -131,6 +160,33 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     @Override
     public boolean shouldDisplayFloorController(List<Floor> floors) {
         return false;
+    }
+
+    @Override
+    public void onVenueEnter(@NonNull Venue venue) {
+
+        Log.d("Debug","OnVenueEnter");
+
+//        Intent eventMapIntent = new Intent(this, EventMapActivity.class);
+//        this.startActivity(eventMapIntent);
+
+    }
+
+    @Override
+    public void onVenueWillEnter(@NonNull Venue venue) {
+
+        Log.d("Debug","OnVenueWillEnter");
+
+//        Intent eventMapIntent = new Intent(mapwizeFragment.getContext(), EventMapActivity.class);
+//        this.startActivity(eventMapIntent);
+
+    }
+
+    @Override
+    public void onVenueExit(@NonNull Venue venue) {
+
+        Log.d("Debug","OnVenueExit");
+
     }
 
 }

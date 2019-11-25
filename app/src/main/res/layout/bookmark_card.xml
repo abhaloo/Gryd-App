@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp">
+
+        <TextView
+            android:id="@+id/eventName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="----------"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/eventDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-------------------"
+            android:textSize="13sp"
+            android:layout_below="@+id/eventName"/>
+
+        <TextView
+            android:id="@+id/eventBlurb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="---------------------------------"
+            android:textSize="15sp"
+            android:layout_below="@+id/eventDates"/>
+
+        <ImageView
+            android:id="@+id/removeBookmark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_bookmark_card_remove"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
 
+    private NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navigationView);
+        navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -86,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String tag = "";
         switch (item.getItemId()){
             case R.id.search:
-                selectedFragment = mapwizeFragment;
+//                selectedFragment = mapwizeFragment;
+                selectedFragment = new SearchFragment();
                 break;
             case R.id.bookmarks:
                 selectedFragment = new BookmarksFragment();
@@ -120,12 +125,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            Fragment myFragment = getSupportFragmentManager().findFragmentByTag("HOME");
-            if (myFragment != null && myFragment.isVisible()) {
+            Fragment homeFragment = getSupportFragmentManager().findFragmentByTag("HOME");
+            if (homeFragment != null && homeFragment.isVisible()) {
                 super.onBackPressed();
             }
             else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(mapwizeFragment), "HOME").commit();
+                navigationView.setCheckedItem(R.id.home);
             }
         }
     }

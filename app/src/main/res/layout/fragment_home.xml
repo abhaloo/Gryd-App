@@ -22,7 +22,7 @@
             android:id="@+id/logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_map_24dp" />
+            android:src="@drawable/ic_bottomnav_map" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,15 +48,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_bookmark_black_24dp" />
+                    android:src="@drawable/ic_home_bookmarks" />
 
                 <ImageButton
                     android:id="@+id/calender"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_calendar_24dp" />
-
+                    android:src="@drawable/ic_home_calendar" />
 
             </LinearLayout>
 
@@ -64,7 +63,7 @@
                 android:id="@+id/recent_view_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Recently Viewed" />+
+                android:text="Recently Viewed" />
 
 
         </LinearLayout>

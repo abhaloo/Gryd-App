@@ -3,4 +3,5 @@
     <color name="colorPrimary">#4B9EC0</color>
     <color name="colorPrimaryDark">#43778C</color>
     <color name="colorAccent">#AFE6FA</color>
+    <color name="mapwize_main_color">#000000</color>
 </resources>

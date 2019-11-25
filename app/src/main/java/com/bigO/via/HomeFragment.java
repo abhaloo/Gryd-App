@@ -31,47 +31,52 @@ public class HomeFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageButton logo_button = (ImageButton) view.findViewById(R.id.logo);
         logo_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { goToEventHandler(v); }
+            public void onClick(View v) {
+                goToEventHandler(v);
+            }
         });
 
         ImageButton search_button = (ImageButton) view.findViewById(R.id.search_button);
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { searchHandler(v); }
+            public void onClick(View v) {
+                searchHandler(v);
+            }
         });
 
 
         return view;
     }
 
-    /** Called when the user touches the search button */
+    /**
+     * Called when the user touches the search button
+     */
     public void searchHandler(View view) {
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
         NavigationView navigationView = this.getActivity().findViewById(R.id.navigationView);
         navigationView.setCheckedItem(R.id.search);
     }
 
-    /** Called when the user touches the search button */
+    /**
+     * Called when the user touches the search button
+     */
     public void goToEventHandler(View view) {
-        // Do something in response to search click
         Intent eventMapIntent;
         eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventMapActivity.class);
-
         this.startActivity(eventMapIntent);
     }
 
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
     }
-
 
 
 }

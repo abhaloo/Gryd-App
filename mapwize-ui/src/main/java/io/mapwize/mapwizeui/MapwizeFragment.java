@@ -2,7 +2,6 @@ package io.mapwize.mapwizeui;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,11 +16,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import java.util.List;
 
@@ -710,9 +705,6 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
 //        if (initializePlace != null) {
 //            selectPlace(initializePlace, false);
 //            initializePlace = null;
-////            Intent eventMapIntent;
-////            eventMapIntent = new Intent(MapwizeFragment.this.getActivity(), EventMapActivity.class);
-////            this.startActivity(eventMapIntent);
 //        }
 //    }
 //
@@ -786,8 +778,11 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
     }
 
     public interface OnVenueEnterListener {
-        void onVenueExit(@NonNull Venue venue);
         void onVenueEnter(@NonNull Venue venue);
         void onVenueWillEnter(@NonNull Venue venue);
+    }
+
+    public interface OnVenueExitListener {
+        void onVenueExit(@NonNull Venue venue);
     }
 }
