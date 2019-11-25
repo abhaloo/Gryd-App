@@ -42,8 +42,7 @@ import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
-public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener,
-        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener {
+public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener{
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;

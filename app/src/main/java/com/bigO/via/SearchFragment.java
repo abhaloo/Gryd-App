@@ -69,9 +69,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onItemClick(int position) {
-//                Intent eventMapIntent;
-//                eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventMapActivity.class);
-//                SearchFragment.this.startActivity(eventMapIntent);
+                Intent eventMapIntent;
+                eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventMapActivity.class);
+                SearchFragment.this.startActivity(eventMapIntent);
             }
 
             @Override
