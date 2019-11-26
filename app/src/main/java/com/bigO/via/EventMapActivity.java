@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -37,17 +38,22 @@ import io.mapwize.mapwizesdk.api.ApiFilter;
 import io.mapwize.mapwizesdk.api.Floor;
 import io.mapwize.mapwizesdk.api.MapwizeObject;
 import io.mapwize.mapwizesdk.api.Place;
+import io.mapwize.mapwizesdk.api.Placelist;
+import io.mapwize.mapwizesdk.api.Universe;
+import io.mapwize.mapwizesdk.api.Venue;
 import io.mapwize.mapwizesdk.map.FollowUserMode;
 import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
+import io.mapwize.mapwizeui.SearchBarView;
 
-public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener{
+public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener, SearchBarView.SearchBarListener{
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
     private final String venID = "5d86c0b3b2f753001620538d";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     ArrayList<PlaceData> places;
 
@@ -66,6 +72,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         MapOptions opts = new MapOptions.Builder()
             .language(Locale.getDefault().getLanguage())
@@ -91,7 +98,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
                             selectedFragment = new EventListViewFragment(places);
                             break;
                         case R.id.schedule_view:
-                            selectedFragment = new EventScheduleViewFragment();
+                            selectedFragment = new SchedulesFragment();
                             break;
                         default:
                             selectedFragment = mapwizeFragment;
@@ -205,4 +212,32 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     }
 
 
+    @Override
+    public void onSearchResult(Place place, Universe universe) {
+        mapwizeFragment.onSearchResult(place,universe);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, place.getName());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "place search");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, bundle);
+    }
+
+    @Override
+    public void onSearchResult(Placelist placelist) {
+        mapwizeFragment.onSearchResult(placelist);
+    }
+
+    @Override
+    public void onSearchResult(Venue venue) {
+        mapwizeFragment.onSearchResult(venue);
+    }
+
+    @Override
+    public void onLeftButtonClick(View view) {
+        mapwizeFragment.onLeftButtonClick(view);
+    }
+
+    @Override
+    public void onRightButtonClick(View view) {
+        mapwizeFragment.onRightButtonClick(view);
+    }
 }
