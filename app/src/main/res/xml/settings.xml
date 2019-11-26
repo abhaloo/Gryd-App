@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="Preferences">
+
+        <CheckBoxPreference
+            app:key="defaultView"
+            app:title="Make List View Default"/>
+
+        <SwitchPreferenceCompat
+            app:key="notifications"
+            app:title="Enable Notifications"
+            app:summary="If enabled, we'll notify you if a timed attraction on your schedule is about to begin"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="Privacy">
+
+        <SwitchPreferenceCompat
+            app:key="searchLogging"
+            app:title="Allow Search Logging"
+            app:summary="Help up improve your experience by allowing us to anonymously log your searches"/>
+
+        <SwitchPreferenceCompat
+            app:key="locationTracking"
+            app:title="Allow Location Tracking"
+            app:summary="Tracking your location at events lets us help event organizers optimize routes and smoothen your day"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
