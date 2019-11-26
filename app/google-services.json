@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "838867159894",
+    "firebase_url": "https://viaapp-27a76.firebaseio.com",
+    "project_id": "viaapp-27a76",
+    "storage_bucket": "viaapp-27a76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838867159894:android:61cd167dc73e86422ca4f7",
+        "android_client_info": {
+          "package_name": "com.bigO.via"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838867159894-37j20e3bt6odegs1e0n136llcpgaluj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTgpRPhD4GaVQigXRJMx-nIpTVS44ZmkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838867159894-37j20e3bt6odegs1e0n136llcpgaluj2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
