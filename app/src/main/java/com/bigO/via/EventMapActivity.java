@@ -91,7 +91,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
                             selectedFragment = new EventListViewFragment(places);
                             break;
                         case R.id.schedule_view:
-                            selectedFragment = new EventScheduleViewFragment();
+                            selectedFragment = new SchedulesFragment();
                             break;
                         default:
                             selectedFragment = mapwizeFragment;
