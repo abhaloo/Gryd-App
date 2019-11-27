@@ -3,6 +3,7 @@ package com.bigO.via;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,17 +15,57 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
 
     private ArrayList<ScheduleElement> scheduleList;
 
+    private OnItemClickListener scheduleAdapterListener;
+
+    public void setOnItemClickListener(OnItemClickListener scheduleAdapterListener) {
+        this.scheduleAdapterListener = scheduleAdapterListener;
+    }
+
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+        void onRemoveClick(int position);
+    }
+
+
     public static class ScheduleListViewHolder extends RecyclerView.ViewHolder {
 
         public TextView scheduleEventName;
         public TextView scheduleEventTime;
         public TextView scheduleEventData;
+        public ImageView removeImage;
 
-        public ScheduleListViewHolder(@NonNull View itemView) {
+        public ScheduleListViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             scheduleEventName = itemView.findViewById(R.id.schedule_event_name);
             scheduleEventTime = itemView.findViewById(R.id.schedule_event_time);
             scheduleEventData = itemView.findViewById(R.id.schedule_event_data);
+            removeImage = itemView.findViewById(R.id.schedule_remove);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            listener.onItemClick(pos);
+                        }
+                    }
+
+                }
+            });
+
+            removeImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null) {
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            listener.onRemoveClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -36,7 +77,7 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
     @Override
     public ScheduleListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_card, parent,false);
-        ScheduleListViewHolder scheduleListViewHolder = new ScheduleListViewHolder(view);
+        ScheduleListViewHolder scheduleListViewHolder = new ScheduleListViewHolder(view, scheduleAdapterListener);
         return  scheduleListViewHolder;
     }
 
