@@ -17,12 +17,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -54,6 +51,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
     private final String venID = "5d86c0b3b2f753001620538d";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private boolean isLocationFected = false;
 
     ArrayList<PlaceData> places;
 
@@ -162,8 +160,9 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
         mapboxMap.setMinZoomPreference(16);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
-        getPlaces();
-
+        if(!isLocationFected) {
+            getPlaces();
+        }
     }
 
     @Override
@@ -191,17 +190,13 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
             public void onSuccess(List<Place> venplaces) {
                 places = new ArrayList<>();
                 for(Place place: venplaces) {
-//                    places.add(place.getName());
-
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
 
-                    PlaceData newPlace = new PlaceData(name,placeData,icon);
-
+                    boolean isEvent = PlaceData.isEvent(name);
+                    PlaceData newPlace = new PlaceData(name,placeData,isEvent,icon);
                     places.add(newPlace);
-
-
                 }
             }
             @Override

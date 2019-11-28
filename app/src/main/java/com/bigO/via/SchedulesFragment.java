@@ -22,23 +22,22 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SchedulesFragment extends Fragment {
 
-    private ArrayList<ScheduleElement> scheduleList;
+    private ArrayList<PlaceData> scheduleList;
 
     private RecyclerView scheduleRecylerView;
     private ScheduleRcAdapter scheduleRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loadSchedule();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_event_schedule, container, false);
-        scheduleList = new ArrayList<>();
-
-        scheduleList.add(new ScheduleElement("Event 3", "10 am to 6 pm","This is a random test event"));
-        scheduleList.add(new ScheduleElement("Event 1", "10 am to 1pm","This is a random test event"));
-        scheduleList.add(new ScheduleElement("Event 2", "1 pm to 5 pm","This is a random test event"));
-        scheduleList.add(new ScheduleElement("Event 3", "10 am to 6 pm","This is a random test event"));
 
         createRecyclerView(view);
 
@@ -57,7 +56,6 @@ public class SchedulesFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 String test = scheduleList.get(position).getName() + " was click";
-
                 Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -65,10 +63,12 @@ public class SchedulesFragment extends Fragment {
             @Override
             public void onRemoveClick(int position) {
                 String test = scheduleList.get(position).getName() + " was removed";
-
                 Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                 toast.show();
 
+                scheduleList.remove(position);
+                scheduleRecyclerListAdapter.notifyItemRemoved(position);
+                saveSchedule();
             }
         });
 
@@ -88,7 +88,7 @@ public class SchedulesFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("bookmark list", null);
-        Type type = new TypeToken<ArrayList<Event>>() {}.getType();
+        Type type = new TypeToken<ArrayList<PlaceData>>() {}.getType();
         scheduleList = gson.fromJson(json, type);
 
         if (scheduleList == null) {

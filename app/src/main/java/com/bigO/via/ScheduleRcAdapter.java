@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.ScheduleListViewHolder> {
 
-    private ArrayList<ScheduleElement> scheduleList;
+    private ArrayList<PlaceData> scheduleList;
 
     private OnItemClickListener scheduleAdapterListener;
 
@@ -21,12 +21,10 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
         this.scheduleAdapterListener = scheduleAdapterListener;
     }
 
-
     public interface OnItemClickListener{
         void onItemClick(int position);
         void onRemoveClick(int position);
     }
-
 
     public static class ScheduleListViewHolder extends RecyclerView.ViewHolder {
 
@@ -69,7 +67,7 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
         }
     }
 
-    public ScheduleRcAdapter(ArrayList<ScheduleElement> scheduleList) {
+    public ScheduleRcAdapter(ArrayList<PlaceData> scheduleList) {
         this.scheduleList = scheduleList;
     }
 
@@ -83,18 +81,16 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleListViewHolder holder, int position) {
-        ScheduleElement currentScheduleElement = scheduleList.get(position);
+        PlaceData currentScheduleElement = scheduleList.get(position);
         holder.scheduleEventName.setText(currentScheduleElement.getName());
-        holder.scheduleEventTime.setText(currentScheduleElement.getTime());
-        holder.scheduleEventData.setText(currentScheduleElement.getData());
+        // TODO set time and data
+        holder.scheduleEventTime.setText("Random Time");
+        holder.scheduleEventData.setText("Random Data");
     }
 
     @Override
     public int getItemCount() {
         return scheduleList.size();
     }
-
-
-
 
 }
