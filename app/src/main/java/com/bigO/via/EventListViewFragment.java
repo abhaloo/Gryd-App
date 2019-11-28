@@ -2,6 +2,7 @@ package com.bigO.via;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,18 +72,22 @@ public class EventListViewFragment extends Fragment {
                     EventDuration duration = places.get(position).getEventDuration();
 
                     if (checkCollisions(duration)){
-                        String test = places.get(position).getName() + " Colliding with the current schedule";
+                        Log.i("Debug","collision");
+                        String test = places.get(position).getName() + " Colliding with the current schedule but adding it";
+                        Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
+                        toast.show();
+                        scheduleList.add(places.get(position));
+
+                    }else {
+                        scheduleList.add(places.get(position));
+                        String test = places.get(position).getName() + " Should be added to Schedule";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
 
                     }
-                    scheduleList.add(places.get(position));
                     eventRecyclerListAdapter.notifyItemChanged(position);
                     saveSchedule();
 
-                    String test = places.get(position).getName() + " Should be added to Schedule";
-                    Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
-                    toast.show();
 
                 } else if(!PlaceData.isEvent(clickedEvent.getName())){
                     String test = "Cannot add activity " + places.get(position).getName() + " to the schedule";
@@ -145,12 +150,10 @@ public class EventListViewFragment extends Fragment {
 
             if (
                     // starts after ends before
-                    (duration.getStartHour() >= scheduleEventDuration.getStartHour()
-                    && duration.getEndHour() <= scheduleEventDuration.getEndHour())
-                    // starts before ends after
-                    || (duration.getStartHour() >= scheduleEventDuration.getStartHour()
-                    && duration.getEndHour() >= scheduleEventDuration.getEndHour())
-            ) {
+                    (scheduleEventDuration.getStartHour() >= duration.getStartHour()
+                    && scheduleEventDuration.getEndHour() <= duration.getEndHour())
+            || (scheduleEventDuration.getStartHour() <= duration.getStartHour()
+                            && scheduleEventDuration.getEndHour() >= duration.getEndHour())) {
                 collision = true;
             }
         }

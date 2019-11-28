@@ -83,9 +83,8 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
     public void onBindViewHolder(@NonNull ScheduleListViewHolder holder, int position) {
         PlaceData currentScheduleElement = scheduleList.get(position);
         holder.scheduleEventName.setText(currentScheduleElement.getName());
-        // TODO set time and data
         String time = "From:\t" + currentScheduleElement.getEventDuration().getStartHour() + ":" + currentScheduleElement.getEventDuration().getStartMinute()
-                + "to " + currentScheduleElement.getEventDuration().getEndHour() + ":" + currentScheduleElement.getEventDuration().getEndMinute();
+                + " to " + currentScheduleElement.getEventDuration().getEndHour() + ":" + currentScheduleElement.getEventDuration().getEndMinute();
         holder.scheduleEventTime.setText(time);
         holder.scheduleEventData.setText("Random Data");
     }
