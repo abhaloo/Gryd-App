@@ -34,21 +34,6 @@ public class BookmarksFragment extends Fragment {
         super.onCreate(savedInstanceState);
         loadBookmarks();
 
-//        bookmarkList = new ArrayList<Event>();
-//        String eventName = "Calgary Auto Show";
-//        String blurb = "The leading car show in North America";
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//        Date startDate = new Date();
-//        Date endDate = new Date();
-//        try {
-//            startDate = dateFormat.parse("12/12/2019");
-//            endDate = dateFormat.parse("17/12/2019");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        bookmarkList.add(new Event(eventName, blurb, startDate, endDate));
-//        bookmarkList.add(new Event(eventName, blurb, startDate, endDate));
-//        bookmarkList.add(new Event(eventName, blurb, startDate, endDate));
     }
 
     @Nullable

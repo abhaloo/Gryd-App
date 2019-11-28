@@ -30,6 +30,7 @@ public class EventRcAdapter extends RecyclerView.Adapter<EventRcAdapter.EventLis
         public ImageView placeIcon;
         public TextView placeName;
         public TextView placeData;
+        public TextView placeDuration;
         public ImageView addToSchedule;
 
 
@@ -38,6 +39,7 @@ public class EventRcAdapter extends RecyclerView.Adapter<EventRcAdapter.EventLis
             placeIcon = itemView.findViewById(R.id.place_logo);
             placeName = itemView.findViewById(R.id.place_name);
             placeData = itemView.findViewById(R.id.place_data);
+            placeDuration = itemView.findViewById(R.id.place_duration);
             addToSchedule = itemView.findViewById(R.id.add_to_schedule_image);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +86,10 @@ public class EventRcAdapter extends RecyclerView.Adapter<EventRcAdapter.EventLis
         PlaceData currentPlace = places.get(position);
         holder.placeIcon.setImageBitmap(currentPlace.getIcon());
         holder.placeName.setText(currentPlace.getName());
+        String duration = "From:\t" + currentPlace.getEventDuration().getStartHour() + ":" + currentPlace.getEventDuration().getStartMinute()
+                + " to " + currentPlace.getEventDuration().getEndHour() + ":" + currentPlace.getEventDuration().getEndMinute();
+        holder.placeDuration.setText(duration);
+
         holder.placeData.setText("Random Data");
         // TODO present the place data in a nice way!
 //        placeData.setText(singlePlace.getPlaceData().toString());

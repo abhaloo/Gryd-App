@@ -34,7 +34,7 @@
             android:layout_below="@+id/schedule_event_time"/>
 
         <ImageView
-            android:id="@+id/removeBookmark"
+            android:id="@+id/schedule_remove"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/ic_bookmark_card_remove"

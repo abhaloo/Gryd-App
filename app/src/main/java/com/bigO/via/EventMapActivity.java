@@ -17,12 +17,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -54,8 +51,10 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
     private final String venID = "5d86c0b3b2f753001620538d";
     private FirebaseAnalytics mFirebaseAnalytics;
+    private boolean isLocationFected = false;
 
     ArrayList<PlaceData> places;
+    private EventDuration[] eventDurations = HardCodedData.getEventTimeData();
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
     private static final LatLng BOUND_CORNER_SE = new LatLng(51.079485532515136, -114.13504242897035);
@@ -162,14 +161,13 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
         mapboxMap.setMinZoomPreference(16);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
-        getPlaces();
-
+        if(!isLocationFected) {
+            getPlaces();
+        }
     }
 
     @Override
     public void onFollowUserButtonClickWithoutLocation(){
-        Log.i("Debug", "onFollowUserButtonClickWithoutLocation event");
-//
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
     }
@@ -190,18 +188,17 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
             @Override
             public void onSuccess(List<Place> venplaces) {
                 places = new ArrayList<>();
+                int counter = 0;
                 for(Place place: venplaces) {
-//                    places.add(place.getName());
-
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
-
-                    PlaceData newPlace = new PlaceData(name,placeData,icon);
-
+                    boolean isEvent = PlaceData.isEvent(name);
+                    Log.i("Debug", "counter = " + counter);
+                    EventDuration duration = eventDurations[counter];
+                    PlaceData newPlace = new PlaceData(name,placeData,duration,isEvent,icon);
                     places.add(newPlace);
-
-
+                    counter++;
                 }
             }
             @Override
