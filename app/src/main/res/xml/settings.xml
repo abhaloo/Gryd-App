@@ -7,7 +7,7 @@
         app:title="Preferences">
 
         <CheckBoxPreference
-            app:key="defaultView"
+            app:key="listViewDefault"
             app:title="Make List View Default"/>
 
         <SwitchPreferenceCompat

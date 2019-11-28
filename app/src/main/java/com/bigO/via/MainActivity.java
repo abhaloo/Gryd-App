@@ -40,20 +40,25 @@ import io.mapwize.mapwizeui.MapwizeFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         MapwizeFragment.OnFragmentInteractionListener,
-        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener{
+        MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener, SharedPreferences.OnSharedPreferenceChangeListener{
 
     private DrawerLayout drawer;
+    private NavigationView navigationView;
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
 
-    private NavigationView navigationView;
+    private SharedPreferences sharedPreferences;
+    private boolean listViewDefault;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
+        listViewDefault = sharedPreferences.getBoolean("listViewDefault", false);
 
         Mapbox.getInstance(this, "pk.mapwize");
 
@@ -90,8 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String tag = "";
         switch (item.getItemId()){
             case R.id.search:
-//                selectedFragment = mapwizeFragment;
-                selectedFragment = new SearchFragment();
+                if (listViewDefault){
+                    selectedFragment = new SearchFragment();
+                }
+                else{
+                    selectedFragment = mapwizeFragment;
+                }
                 break;
             case R.id.bookmarks:
                 selectedFragment = new BookmarksFragment();
@@ -197,4 +206,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        listViewDefault = sharedPreferences.getBoolean("listViewDefault", false);
+    }
 }
