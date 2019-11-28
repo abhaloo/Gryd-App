@@ -32,7 +32,6 @@ public class EventListViewFragment extends Fragment {
 
     public EventListViewFragment(ArrayList<PlaceData> places){
         this.places = places;
-
     }
 
     @Override
@@ -52,7 +51,6 @@ public class EventListViewFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 String test = places.get(position).getName() + " was click";
-
                 Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -70,6 +68,14 @@ public class EventListViewFragment extends Fragment {
 
                // add it to the scheduled list if its not in the list and it is an event
                 if(!isScheduled && PlaceData.isEvent(clickedEvent.getName())){
+                    EventDuration duration = places.get(position).getEventDuration();
+
+                    if (checkCollisions(duration)){
+                        String test = places.get(position).getName() + " Colliding with the current schedule";
+                        Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
+                        toast.show();
+
+                    }
                     scheduleList.add(places.get(position));
                     eventRecyclerListAdapter.notifyItemChanged(position);
                     saveSchedule();
@@ -130,5 +136,25 @@ public class EventListViewFragment extends Fragment {
     }
 
 
+    public boolean checkCollisions(EventDuration duration){
+
+        boolean collision = false;
+
+        for(PlaceData place:scheduleList) {
+            EventDuration scheduleEventDuration = place.getEventDuration();
+
+            if (
+                    // starts after ends before
+                    (duration.getStartHour() >= scheduleEventDuration.getStartHour()
+                    && duration.getEndHour() <= scheduleEventDuration.getEndHour())
+                    // starts before ends after
+                    || (duration.getStartHour() >= scheduleEventDuration.getStartHour()
+                    && duration.getEndHour() >= scheduleEventDuration.getEndHour())
+            ) {
+                collision = true;
+            }
+        }
+        return collision;
+    }
 
 }

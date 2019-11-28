@@ -54,6 +54,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
     private boolean isLocationFected = false;
 
     ArrayList<PlaceData> places;
+    private EventDuration[] eventDurations = HardCodedData.getEventTimeData();
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
     private static final LatLng BOUND_CORNER_SE = new LatLng(51.079485532515136, -114.13504242897035);
@@ -167,8 +168,6 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
 
     @Override
     public void onFollowUserButtonClickWithoutLocation(){
-        Log.i("Debug", "onFollowUserButtonClickWithoutLocation event");
-//
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
     }
@@ -189,14 +188,17 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
             @Override
             public void onSuccess(List<Place> venplaces) {
                 places = new ArrayList<>();
+                int counter = 0;
                 for(Place place: venplaces) {
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
-
                     boolean isEvent = PlaceData.isEvent(name);
-                    PlaceData newPlace = new PlaceData(name,placeData,isEvent,icon);
+                    Log.i("Debug", "counter = " + counter);
+                    EventDuration duration = eventDurations[counter];
+                    PlaceData newPlace = new PlaceData(name,placeData,duration,isEvent,icon);
                     places.add(newPlace);
+                    counter++;
                 }
             }
             @Override

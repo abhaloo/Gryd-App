@@ -12,11 +12,12 @@ public class PlaceData {
     private boolean isEvent = true;
 
 
-    public PlaceData(String name, JSONObject placeData,boolean isEvent ,Bitmap icon){
+    public PlaceData(String name, JSONObject placeData,EventDuration eventDuration, boolean isEvent, Bitmap icon){
         this.name = name;
         this.placeData = placeData;
         this.icon = icon;
         this.isEvent = isEvent;
+        this.eventDuration = eventDuration;
     }
 
     public String unwrapJson(JSONObject data){
@@ -53,6 +54,14 @@ public class PlaceData {
         }
 
         return is_Event;
+    }
+
+    public EventDuration getEventDuration() {
+        return eventDuration;
+    }
+
+    public boolean isEvent() {
+        return isEvent;
     }
 
 }

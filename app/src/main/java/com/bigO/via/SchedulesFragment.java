@@ -74,7 +74,6 @@ public class SchedulesFragment extends Fragment {
 
     }
 
-
     private void saveSchedule() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
