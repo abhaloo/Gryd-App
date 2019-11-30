@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(mapwizeFragment), "HOME").commit();
                 navigationView.setCheckedItem(R.id.home);
+                toolbar.setTitle("Via");
             }
         }
     }
