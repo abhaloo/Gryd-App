@@ -33,22 +33,24 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+
         super.onCreate(savedInstanceState);
         loadBookmarks();
 
-        eventList = new ArrayList<Event>();
+        eventList = new ArrayList<>();
         String eventName = "Calgary Auto Show";
         String blurb = "The leading car show in North America";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date startDate = new Date();
         Date endDate = new Date();
         try {
-            startDate = dateFormat.parse("12/12/2019");
-            endDate = dateFormat.parse("17/12/2019");
+            startDate = dateFormat.parse("11/03/2020");
+            endDate = dateFormat.parse("15/03/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
         eventList.add(new Event(eventName, blurb, startDate, endDate));
+
     }
 
     @Nullable
@@ -70,7 +72,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Intent eventMapIntent;
-                eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventMapActivity.class);
+                eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventActivity.class);
                 SearchFragment.this.startActivity(eventMapIntent);
             }
 

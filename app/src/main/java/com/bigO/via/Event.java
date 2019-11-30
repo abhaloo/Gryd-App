@@ -1,5 +1,7 @@
 package com.bigO.via;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Event {
@@ -9,7 +11,7 @@ public class Event {
     private Date startDate;
     private Date endDate;
 
-    public Event(String anEventName, String aBlurb, Date aStartDate, Date anEndDate){
+    public Event(String anEventName, String aBlurb, Date aStartDate, Date anEndDate) {
         this.eventName = anEventName;
         this.blurb = aBlurb;
         this.startDate = aStartDate;
@@ -20,7 +22,7 @@ public class Event {
         return eventName;
     }
 
-    public String getBlurb(){
+    public String getBlurb() {
         return blurb;
     }
 
@@ -33,6 +35,10 @@ public class Event {
     }
 
     public String getDatesAsString() {
-        return startDate.toString() + " - " + endDate.toString();
+
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        String startDateString = outputFormatter.format(startDate);
+        String endDateString = outputFormatter.format(endDate);
+        return startDateString + " - " + endDateString;
     }
 }

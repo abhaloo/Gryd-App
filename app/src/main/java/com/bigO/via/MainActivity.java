@@ -17,11 +17,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import io.indoorlocation.gps.GPSIndoorLocationProvider;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MapwizeFragment.OnFragmentInteractionListener,
         MapwizeMap.OnVenueEnterListener, MapwizeMap.OnVenueExitListener, SharedPreferences.OnSharedPreferenceChangeListener{
 
+    private Toolbar toolbar;
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
@@ -57,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = this.getSharedPreferences("shared preferences", MODE_PRIVATE);
-        listViewDefault = sharedPreferences.getBoolean("listViewDefault", false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Mapbox.getInstance(this, "pk.mapwize");
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             .build();
         mapwizeFragment = MapwizeFragment.newInstance(opts);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        listViewDefault = sharedPreferences.getBoolean("listViewDefault", false);
         Fragment selectedFragment;
         String tag = "";
         switch (item.getItemId()){
@@ -101,25 +102,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else{
                     selectedFragment = mapwizeFragment;
                 }
+                toolbar.setTitle("Search");
                 break;
             case R.id.bookmarks:
                 selectedFragment = new BookmarksFragment();
+                toolbar.setTitle("Bookmarks");
                 break;
             case R.id.schedules:
                 selectedFragment = new SchedulesFragment();
+                toolbar.setTitle("Schedules");
                 break;
             case R.id.settings:
                 selectedFragment = new SettingsFragment();
+                toolbar.setTitle("Settings");
                 break;
             case R.id.privacy_policy:
                 selectedFragment = new PrivacyPolicyFragment();
+                toolbar.setTitle("Privacy Policy");
                 break;
             case R.id.help_and_feedback:
                 selectedFragment = new HelpAndFeedbackFragment();
+                toolbar.setTitle("Help and Feedback");
                 break;
             default:
-                selectedFragment = new HomeFragment(mapwizeFragment);
                 tag = "HOME";
+                selectedFragment = new HomeFragment(mapwizeFragment);
+                toolbar.setTitle("Via");
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, tag).commit();
@@ -188,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onVenueEnter(@NonNull Venue venue) {
 
         Log.d("Debug","OnVenueEnter");
-        Intent eventMapIntent = new Intent(this, EventMapActivity.class);
+        Intent eventMapIntent = new Intent(this, EventActivity.class);
         this.startActivity(eventMapIntent);
 
     }

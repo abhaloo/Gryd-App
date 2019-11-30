@@ -1,14 +1,13 @@
 package com.bigO.via;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.preference.CheckBoxPreference;
 
 public class SettingsFragment extends androidx.preference.PreferenceFragmentCompat {
+
+    private CheckBoxPreference listViewDefault;
 
     @Nullable
     @Override
@@ -19,6 +18,7 @@ public class SettingsFragment extends androidx.preference.PreferenceFragmentComp
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.settings);
+        setPreferencesFromResource(R.xml.settings, rootKey);
     }
+
 }

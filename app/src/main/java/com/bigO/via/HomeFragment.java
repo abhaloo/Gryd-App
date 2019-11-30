@@ -5,20 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Locale;
-
-import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizeui.MapwizeFragment;
 
 public class HomeFragment extends Fragment {
@@ -69,7 +62,7 @@ public class HomeFragment extends Fragment {
      */
     public void goToEventHandler(View view) {
         Intent eventMapIntent;
-        eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventMapActivity.class);
+        eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventActivity.class);
         this.startActivity(eventMapIntent);
     }
 

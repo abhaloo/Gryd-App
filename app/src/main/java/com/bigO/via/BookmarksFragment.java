@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,10 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -26,6 +24,7 @@ public class BookmarksFragment extends Fragment {
 
     private ArrayList<Event> bookmarkList;
     private RecyclerView bRecyclerView;
+    private TextView bEmptyView;
     private RecyclerView.LayoutManager bLayoutManager;
     private BookmarksAdapter bAdapter;
 
@@ -43,6 +42,7 @@ public class BookmarksFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
 
         bRecyclerView = view.findViewById(R.id.bookmarksRecyclerView);
+        bEmptyView = view.findViewById(R.id.emptyView);
         bLayoutManager = new LinearLayoutManager(this.getActivity());
         bAdapter = new BookmarksAdapter(bookmarkList);
 
@@ -50,11 +50,18 @@ public class BookmarksFragment extends Fragment {
         bRecyclerView.setLayoutManager(bLayoutManager);
         bRecyclerView.setAdapter(bAdapter);
 
+        if (bookmarkList.isEmpty()) {
+            bEmptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            bEmptyView.setVisibility(View.GONE);
+        }
+
         bAdapter.setOnItemClickListener(new BookmarksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Intent eventMapIntent;
-                eventMapIntent = new Intent(BookmarksFragment.this.getActivity(), EventMapActivity.class);
+                eventMapIntent = new Intent(BookmarksFragment.this.getActivity(), EventActivity.class);
                 BookmarksFragment.this.startActivity(eventMapIntent);
             }
 
@@ -65,6 +72,31 @@ public class BookmarksFragment extends Fragment {
                 saveBookmarks();
             }
 
+        });
+
+        bAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            void checkEmpty() {
+                bEmptyView.setVisibility(bAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
         });
 
         return view;

@@ -98,10 +98,7 @@ public class EventListViewFragment extends Fragment {
                     String test = places.get(position).getName() + " Already in the Schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
-
                 }
-
-
             }
         });
 
@@ -124,14 +121,14 @@ public class EventListViewFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(scheduleList);
-        editor.putString("bookmark list", json);
+        editor.putString("schedule list", json);
         editor.apply();
     }
 
     private void loadSchedule() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("bookmark list", null);
+        String json = sharedPreferences.getString("schedule list", null);
         Type type = new TypeToken<ArrayList<PlaceData>>() {}.getType();
         scheduleList = gson.fromJson(json, type);
 

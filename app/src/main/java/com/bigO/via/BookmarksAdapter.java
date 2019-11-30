@@ -31,6 +31,8 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.book
         public TextView eventDateView;
         public TextView eventBlurbView;
         public ImageView removeButtonView;
+        public ImageView expandButtonView;
+        public TextView noBookmark;
 
         public bookmarksViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -38,6 +40,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.book
             eventDateView = itemView.findViewById(R.id.eventDates);
             eventBlurbView = itemView.findViewById(R.id.eventBlurb);
             removeButtonView = itemView.findViewById(R.id.removeBookmark);
+            expandButtonView = itemView.findViewById(R.id.expand_button);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,6 +62,19 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.book
                         if (position != RecyclerView.NO_POSITION){
                             listener.onRemoveButtonClick(position);
                         }
+                    }
+                }
+            });
+
+            expandButtonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (eventBlurbView.getVisibility() == View.GONE) {
+                        eventBlurbView.setVisibility(View.VISIBLE);
+                        expandButtonView.setImageResource(R.drawable.ic_eventcard_contract);
+                    } else {
+                        eventBlurbView.setVisibility(View.GONE);
+                        expandButtonView.setImageResource(R.drawable.ic_eventcard_expand);
                     }
                 }
             });

@@ -32,6 +32,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchView
         public TextView eventDateView;
         public TextView eventBlurbView;
         public ImageView bookmarkButtonView;
+        public ImageView expandButtonView;
 
         public searchViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -39,6 +40,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchView
             eventDateView = itemView.findViewById(R.id.eventDates);
             eventBlurbView = itemView.findViewById(R.id.eventBlurb);
             bookmarkButtonView = itemView.findViewById(R.id.bookmark);
+            expandButtonView = itemView.findViewById(R.id.expand_button);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +62,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchView
                         if (position != RecyclerView.NO_POSITION){
                             listener.onBookmarkButtonClick(position);
                         }
+                    }
+                }
+            });
+
+            expandButtonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (eventBlurbView.getVisibility() == View.GONE) {
+                        eventBlurbView.setVisibility(View.VISIBLE);
+                        expandButtonView.setImageResource(R.drawable.ic_eventcard_contract);
+                    } else {
+                        eventBlurbView.setVisibility(View.GONE);
+                        expandButtonView.setImageResource(R.drawable.ic_eventcard_expand);
                     }
                 }
             });

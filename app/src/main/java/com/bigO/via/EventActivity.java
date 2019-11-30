@@ -1,7 +1,6 @@
 package com.bigO.via;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ import io.mapwize.mapwizesdk.map.MapwizeMap;
 import io.mapwize.mapwizeui.MapwizeFragment;
 import io.mapwize.mapwizeui.SearchBarView;
 
-public class EventMapActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener, SearchBarView.SearchBarListener{
+public class EventActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener, SearchBarView.SearchBarListener{
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
@@ -97,7 +96,7 @@ public class EventMapActivity extends AppCompatActivity implements MapwizeFragme
                             selectedFragment = new EventListViewFragment(places);
                             break;
                         case R.id.schedule_view:
-                            selectedFragment = new SchedulesFragment();
+                            selectedFragment = new EventScheduleFragment();
                             break;
                         default:
                             selectedFragment = mapwizeFragment;
