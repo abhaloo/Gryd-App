@@ -22,10 +22,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class EventScheduleFragment extends Fragment {
 
-    private ArrayList<PlaceData> scheduleList;
+    private ArrayList<Place> scheduleList;
 
     private RecyclerView scheduleRecylerView;
-    private ScheduleRcAdapter scheduleRecyclerListAdapter;
+    private EventScheduleAdapter scheduleRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
 
     @Override
@@ -47,12 +47,12 @@ public class EventScheduleFragment extends Fragment {
     public void createRecyclerView(View view){
         scheduleRecylerView = view.findViewById(R.id.recycler_schedule_view);
         recyclerViewManger = new LinearLayoutManager(getContext());
-        scheduleRecyclerListAdapter = new ScheduleRcAdapter(scheduleList);
+        scheduleRecyclerListAdapter = new EventScheduleAdapter(scheduleList);
 
         scheduleRecylerView.setLayoutManager(recyclerViewManger);
         scheduleRecylerView.setAdapter(scheduleRecyclerListAdapter);
 
-        scheduleRecyclerListAdapter.setOnItemClickListener(new ScheduleRcAdapter.OnItemClickListener() {
+        scheduleRecyclerListAdapter.setOnItemClickListener(new EventScheduleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String test = scheduleList.get(position).getName() + " was click";
@@ -87,7 +87,7 @@ public class EventScheduleFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("schedule list", null);
-        Type type = new TypeToken<ArrayList<PlaceData>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Place>>() {}.getType();
         scheduleList = gson.fromJson(json, type);
 
         if (scheduleList == null) {

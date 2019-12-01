@@ -36,11 +36,11 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.book
 
         public bookmarksViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
-            eventNameView = itemView.findViewById(R.id.eventName);
-            eventDateView = itemView.findViewById(R.id.eventDates);
-            eventBlurbView = itemView.findViewById(R.id.eventBlurb);
+            eventNameView = itemView.findViewById(R.id.eventName2);
+            eventDateView = itemView.findViewById(R.id.eventDates2);
+            eventBlurbView = itemView.findViewById(R.id.eventBlurb2);
             removeButtonView = itemView.findViewById(R.id.removeBookmark);
-            expandButtonView = itemView.findViewById(R.id.expand_button);
+            expandButtonView = itemView.findViewById(R.id.expand_button2);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

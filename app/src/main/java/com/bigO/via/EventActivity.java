@@ -11,11 +11,13 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -33,7 +35,6 @@ import io.mapwize.mapwizesdk.api.ApiCallback;
 import io.mapwize.mapwizesdk.api.ApiFilter;
 import io.mapwize.mapwizesdk.api.Floor;
 import io.mapwize.mapwizesdk.api.MapwizeObject;
-import io.mapwize.mapwizesdk.api.Place;
 import io.mapwize.mapwizesdk.api.Placelist;
 import io.mapwize.mapwizesdk.api.Universe;
 import io.mapwize.mapwizesdk.api.Venue;
@@ -45,6 +46,8 @@ import io.mapwize.mapwizeui.SearchBarView;
 
 public class EventActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener, SearchBarView.SearchBarListener{
 
+    private SearchView searchView;
+
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
@@ -52,7 +55,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     private FirebaseAnalytics mFirebaseAnalytics;
     private boolean isLocationFected = false;
 
-    ArrayList<PlaceData> places;
+    ArrayList<Place> places;
     private EventDuration[] eventDurations = HardCodedData.getEventTimeData();
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
@@ -66,7 +69,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_event_map);
+        setContentView(R.layout.activity_event);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
@@ -183,19 +186,19 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     public void getPlaces() {
         ApiFilter apiFilter = new ApiFilter.Builder().venueId(venID).build();
-        mapwizeMap.getMapwizeApi().getPlaces(apiFilter, new ApiCallback<List<Place>>() {
+        mapwizeMap.getMapwizeApi().getPlaces(apiFilter, new ApiCallback<List<io.mapwize.mapwizesdk.api.Place>>() {
             @Override
-            public void onSuccess(List<Place> venplaces) {
+            public void onSuccess(List<io.mapwize.mapwizesdk.api.Place> venplaces) {
                 places = new ArrayList<>();
                 int counter = 0;
-                for(Place place: venplaces) {
+                for(io.mapwize.mapwizesdk.api.Place place: venplaces) {
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
-                    boolean isEvent = PlaceData.isEvent(name);
+                    boolean isEvent = Place.isEvent(name);
                     Log.i("Debug", "counter = " + counter);
                     EventDuration duration = eventDurations[counter];
-                    PlaceData newPlace = new PlaceData(name,placeData,duration,isEvent,icon);
+                    Place newPlace = new Place(name,placeData,duration,isEvent,icon);
                     places.add(newPlace);
                     counter++;
                 }
@@ -209,7 +212,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
 
     @Override
-    public void onSearchResult(Place place, Universe universe) {
+    public void onSearchResult(io.mapwize.mapwizesdk.api.Place place, Universe universe) {
         mapwizeFragment.onSearchResult(place,universe);
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, place.getName());
@@ -236,4 +239,5 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     public void onRightButtonClick(View view) {
         mapwizeFragment.onRightButtonClick(view);
     }
+
 }

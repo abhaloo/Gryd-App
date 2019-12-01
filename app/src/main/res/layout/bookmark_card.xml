@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-style="@style/CardView.Light"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginTop="8dp"
-android:layout_marginStart="8dp"
-android:layout_marginEnd="8dp"
-tools:ignore="ContentDescription">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardView.Light"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,31 +17,31 @@ tools:ignore="ContentDescription">
         android:animateLayoutChanges="true">
 
         <TextView
-            android:id="@+id/eventName"
+            android:id="@+id/eventName2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:text="@string/primary"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
-            app:layout_constraintTop_toBottomOf="@+id/eventImage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/eventDates" />
+            app:layout_constraintBottom_toTopOf="@+id/eventDates2" />
 
         <TextView
-            android:id="@+id/eventDates"
+            android:id="@+id/eventDates2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:text="@string/subtext"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/colorSecondaryTextDefaultMaterialLight"
-            app:layout_constraintTop_toBottomOf="@+id/eventName"
+            app:layout_constraintTop_toBottomOf="@+id/eventName2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/bookmark" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -54,12 +54,12 @@ tools:ignore="ContentDescription">
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:src="@drawable/ic_bookmark_card_remove"
-            app:layout_constraintTop_toBottomOf="@+id/eventDates"
+            app:layout_constraintTop_toBottomOf="@+id/eventDates2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/eventBlurb" />
+            app:layout_constraintBottom_toTopOf="@+id/eventBlurb2" />
 
         <ImageButton
-            android:id="@+id/expand_button"
+            android:id="@+id/expand_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -71,7 +71,7 @@ tools:ignore="ContentDescription">
             app:layout_constraintBottom_toBottomOf="@+id/removeBookmark" />
 
         <TextView
-            android:id="@+id/eventBlurb"
+            android:id="@+id/eventBlurb2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

@@ -3,7 +3,7 @@ package com.bigO.via;
 import android.graphics.Bitmap;
 import org.json.JSONObject;
 
-public class PlaceData {
+public class Place {
 
     private String name;
     private JSONObject placeData;
@@ -12,7 +12,7 @@ public class PlaceData {
     private boolean isEvent = true;
 
 
-    public PlaceData(String name, JSONObject placeData,EventDuration eventDuration, boolean isEvent, Bitmap icon){
+    public Place(String name, JSONObject placeData, EventDuration eventDuration, boolean isEvent, Bitmap icon){
         this.name = name;
         this.placeData = placeData;
         this.icon = icon;

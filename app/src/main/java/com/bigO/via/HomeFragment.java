@@ -28,14 +28,6 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ImageButton logo_button = (ImageButton) view.findViewById(R.id.logo);
-        logo_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToEventHandler(v);
-            }
-        });
-
         ImageButton search_button = (ImageButton) view.findViewById(R.id.search_button);
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,15 +47,6 @@ public class HomeFragment extends Fragment {
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
         NavigationView navigationView = this.getActivity().findViewById(R.id.navigationView);
         navigationView.setCheckedItem(R.id.search);
-    }
-
-    /**
-     * Called when the user touches the search button
-     */
-    public void goToEventHandler(View view) {
-        Intent eventMapIntent;
-        eventMapIntent = new Intent(HomeFragment.this.getActivity(), EventActivity.class);
-        this.startActivity(eventMapIntent);
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -4,11 +4,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,14 +28,14 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class EventListViewFragment extends Fragment {
 
-    private ArrayList<PlaceData> places;
+    private ArrayList<Place> places;
 
     private RecyclerView eventRecylerView;
-    private EventRcAdapter eventRecyclerListAdapter;
-    private  RecyclerView.LayoutManager recyclerViewManger;
-    private ArrayList<PlaceData> scheduleList;
+    private EventListViewAdapter eventRecyclerListAdapter;
+    private RecyclerView.LayoutManager recyclerViewManger;
+    private ArrayList<Place> scheduleList;
 
-    public EventListViewFragment(ArrayList<PlaceData> places){
+    public EventListViewFragment(ArrayList<Place> places){
         this.places = places;
     }
 
@@ -46,9 +50,11 @@ public class EventListViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View view = inflater.inflate(R.layout.fragment_event_listview, container, false);
+        setHasOptionsMenu(true);
+
         createRecyclerView(view);
 
-        eventRecyclerListAdapter.setOnItemClickListener(new EventRcAdapter.OnItemClickListener() {
+        eventRecyclerListAdapter.setOnItemClickListener(new EventListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String test = places.get(position).getName() + " was click";
@@ -60,7 +66,7 @@ public class EventListViewFragment extends Fragment {
             public void onAddToScheduleClick(int position) {
                 // check if it's already there
                 boolean isScheduled = false;
-                PlaceData clickedEvent = places.get(position);
+                Place clickedEvent = places.get(position);
                 for (int i=0; i<scheduleList.size(); i++){
                     if (scheduleList.get(i).getName().equals(clickedEvent.getName())){
                         isScheduled = true;
@@ -68,7 +74,7 @@ public class EventListViewFragment extends Fragment {
                 }
 
                // add it to the scheduled list if its not in the list and it is an event
-                if(!isScheduled && PlaceData.isEvent(clickedEvent.getName())){
+                if(!isScheduled && Place.isEvent(clickedEvent.getName())){
                     EventDuration duration = places.get(position).getEventDuration();
 
                     if (checkCollisions(duration)){
@@ -89,7 +95,7 @@ public class EventListViewFragment extends Fragment {
                     saveSchedule();
 
 
-                } else if(!PlaceData.isEvent(clickedEvent.getName())){
+                } else if(!Place.isEvent(clickedEvent.getName())){
                     String test = "Cannot add activity " + places.get(position).getName() + " to the schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
@@ -105,11 +111,37 @@ public class EventListViewFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+
+        inflater.inflate(R.menu.search, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                eventRecyclerListAdapter.getFilter().filter(newText);
+                return false;
+            }
+
+        });
+    }
+
     public void createRecyclerView(View view){
         eventRecylerView = view.findViewById(R.id.recycler_event_list);
         eventRecylerView.setHasFixedSize(true);
         recyclerViewManger = new LinearLayoutManager(getContext());
-        eventRecyclerListAdapter = new EventRcAdapter(places);
+        eventRecyclerListAdapter = new EventListViewAdapter(places);
 
         eventRecylerView.setLayoutManager(recyclerViewManger);
         eventRecylerView.setAdapter(eventRecyclerListAdapter);
@@ -129,7 +161,7 @@ public class EventListViewFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("schedule list", null);
-        Type type = new TypeToken<ArrayList<PlaceData>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Place>>() {}.getType();
         scheduleList = gson.fromJson(json, type);
 
         if (scheduleList == null) {
@@ -142,7 +174,7 @@ public class EventListViewFragment extends Fragment {
 
         boolean collision = false;
 
-        for(PlaceData place:scheduleList) {
+        for(Place place:scheduleList) {
             EventDuration scheduleEventDuration = place.getEventDuration();
 
             if (

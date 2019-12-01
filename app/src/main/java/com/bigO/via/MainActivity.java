@@ -170,10 +170,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mapwizeMap = mapwizeMap;
         GPSIndoorLocationProvider gpsIndoorLocationProvider = new GPSIndoorLocationProvider(mapwizeFragment.getContext());
         gpsIndoorLocationProvider.start();
-        mapwizeMap.addOnVenueEnterListener(this);
-        mapwizeMap.addOnVenueExitListener(this);
         this.mapwizeMap.setIndoorLocationProvider(gpsIndoorLocationProvider);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
+
+        mapwizeMap.addOnVenueEnterListener(this);
+        mapwizeMap.addOnVenueExitListener(this);
     }
 
     @Override

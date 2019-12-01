@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.ScheduleListViewHolder> {
+public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdapter.ScheduleListViewHolder> {
 
-    private ArrayList<PlaceData> scheduleList;
+    private ArrayList<Place> scheduleList;
 
     private OnItemClickListener scheduleAdapterListener;
 
@@ -67,7 +67,7 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
         }
     }
 
-    public ScheduleRcAdapter(ArrayList<PlaceData> scheduleList) {
+    public EventScheduleAdapter(ArrayList<Place> scheduleList) {
         this.scheduleList = scheduleList;
     }
 
@@ -81,7 +81,7 @@ public class ScheduleRcAdapter extends RecyclerView.Adapter<ScheduleRcAdapter.Sc
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleListViewHolder holder, int position) {
-        PlaceData currentScheduleElement = scheduleList.get(position);
+        Place currentScheduleElement = scheduleList.get(position);
         holder.scheduleEventName.setText(currentScheduleElement.getName());
         String time = "From:\t" + currentScheduleElement.getEventDuration().getStartHour() + ":" + currentScheduleElement.getEventDuration().getStartMinute()
                 + " to " + currentScheduleElement.getEventDuration().getEndHour() + ":" + currentScheduleElement.getEventDuration().getEndMinute();
