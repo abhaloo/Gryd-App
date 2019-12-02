@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -60,9 +61,16 @@ public class BookmarksFragment extends Fragment {
         bAdapter.setOnItemClickListener(new BookmarksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent eventMapIntent;
-                eventMapIntent = new Intent(BookmarksFragment.this.getActivity(), EventActivity.class);
-                BookmarksFragment.this.startActivity(eventMapIntent);
+                if (bookmarkList.get(position).isAvailable()){
+                    Intent eventMapIntent;
+                    eventMapIntent = new Intent(BookmarksFragment.this.getActivity(), EventActivity.class);
+                    BookmarksFragment.this.startActivity(eventMapIntent);
+                }
+                else {
+                    String test = bookmarkList.get(position).getEventName() + " is not available yet";
+                    Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
 
             @Override

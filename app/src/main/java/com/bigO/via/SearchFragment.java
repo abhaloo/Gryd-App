@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,18 +39,31 @@ public class SearchFragment extends Fragment {
         loadBookmarks();
 
         eventList = new ArrayList<>();
-        String eventName = "Calgary Auto Show";
-        String blurb = "The leading car show in North America";
+
+        String eventName = "Calgary Stampede 2020";
+        String blurb = "[PROMOTED EVENT]\n\nInformation on this event is not available yet. Please check back later!";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date startDate = new Date();
         Date endDate = new Date();
+        try {
+            startDate = dateFormat.parse("03/07/2020");
+            endDate = dateFormat.parse("12/00/2020");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        eventList.add(new Event(R.drawable.cs_image, eventName, blurb, startDate, endDate, true, false));
+
+        eventName = "Calgary International Auto & Truck Show 2020";
+        blurb = "The leading car show in North America";
+        startDate = new Date();
+        endDate = new Date();
         try {
             startDate = dateFormat.parse("11/03/2020");
             endDate = dateFormat.parse("15/03/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        eventList.add(new Event(eventName, blurb, startDate, endDate));
+        eventList.add(new Event(R.drawable.ciats_image, eventName, blurb, startDate, endDate, false, true));
 
     }
 
@@ -71,26 +85,29 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onItemClick(int position) {
-                Intent eventMapIntent;
-                eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventActivity.class);
-                SearchFragment.this.startActivity(eventMapIntent);
+                if (eventList.get(position).isAvailable()) {
+                    Intent eventMapIntent;
+                    eventMapIntent = new Intent(SearchFragment.this.getActivity(), EventActivity.class);
+                    SearchFragment.this.startActivity(eventMapIntent);
+                }
+                else {
+                    String test = eventList.get(position).getEventName() + " is not available yet";
+                    Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
 
             @Override
             public void onBookmarkButtonClick(int position) {
                 boolean isBookmarked = false;
-                int bookmarkListPosition = -1;
                 Event clickedEvent = eventList.get(position);
                 for (int i=0; i<bookmarkList.size(); i++){
                     if (bookmarkList.get(i).getEventName().equals(clickedEvent.getEventName())){
                         isBookmarked = true;
-                        bookmarkListPosition = i;
+                        bookmarkList.remove(i);
                     }
                 }
-                if (isBookmarked){
-                    bookmarkList.remove(bookmarkListPosition);
-                }
-                else{
+                if (!isBookmarked){
                     bookmarkList.add(clickedEvent);
                 }
                 sAdapter.notifyItemChanged(position);

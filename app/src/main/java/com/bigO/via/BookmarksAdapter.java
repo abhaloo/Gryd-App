@@ -88,7 +88,7 @@ public class BookmarksAdapter extends RecyclerView.Adapter<BookmarksAdapter.book
     @NonNull
     @Override
     public bookmarksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_bookmark, parent, false);
         bookmarksViewHolder bvh = new bookmarksViewHolder(view, bookmarkClickListener);
         return bvh;
     }

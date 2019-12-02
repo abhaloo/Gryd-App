@@ -45,8 +45,6 @@ import io.mapwize.mapwizeui.SearchBarView;
 
 public class EventActivity extends AppCompatActivity implements MapwizeFragment.OnFragmentInteractionListener, SearchBarView.SearchBarListener{
 
-    private SearchView searchView;
-
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
@@ -67,8 +65,9 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_event);
+
+        setTitle("Calgary International Auto & Truck Show");
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
@@ -101,7 +100,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                             selectedFragment = new EventScheduleFragment();
                             break;
                         default:
-                            selectedFragment = mapwizeFragment;
+                            selectedFragment = getMapwizeFragment();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
@@ -138,6 +137,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                 .commit();
         }
         else {
+
             super.onBackPressed();
         }
     }
@@ -241,5 +241,4 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     public MapwizeFragment getMapwizeFragment() {
         return mapwizeFragment;
     }
-
 }

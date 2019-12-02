@@ -14,7 +14,7 @@
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You currently have no attractions in your schedule. Click the 'Add to Schedule' from the list view to add attractions to this list"
+        android:text="You currently have no attractions in your schedule. Click the 'Add to Schedule' button from the list view to add attractions to this list"
         android:textSize="15sp"
         android:textAlignment="center"
         android:padding="10dp"
