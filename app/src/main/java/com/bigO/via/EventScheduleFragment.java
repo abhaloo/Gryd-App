@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ public class EventScheduleFragment extends Fragment {
     private ArrayList<Place> scheduleList;
 
     private RecyclerView scheduleRecylerView;
+    private TextView emptyView;
     private EventScheduleAdapter scheduleRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
 
@@ -40,6 +42,39 @@ public class EventScheduleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_schedule, container, false);
 
         createRecyclerView(view);
+        emptyView = view.findViewById(R.id.emptyView);
+
+        if (scheduleList.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyView.setVisibility(View.GONE);
+        }
+
+        scheduleRecyclerListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            void checkEmpty() {
+                emptyView.setVisibility(scheduleRecyclerListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+        });
 
         return view;
     }
