@@ -3,7 +3,7 @@ package com.bigO.via;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,14 +31,14 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
         public TextView scheduleEventName;
         public TextView scheduleEventTime;
         public TextView scheduleEventData;
-        public ImageView removeImage;
+        public Button removeButton;
 
         public ScheduleListViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             scheduleEventName = itemView.findViewById(R.id.schedule_event_name);
             scheduleEventTime = itemView.findViewById(R.id.schedule_event_time);
             scheduleEventData = itemView.findViewById(R.id.schedule_event_data);
-            removeImage = itemView.findViewById(R.id.schedule_remove);
+            removeButton = itemView.findViewById(R.id.schedule_remove);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,7 +53,7 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
                 }
             });
 
-            removeImage.setOnClickListener(new View.OnClickListener() {
+            removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(listener != null) {

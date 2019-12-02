@@ -558,7 +558,7 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
      * If we have a user indoor location, from field will be set
      * If both field are set, the direction start
      */
-    private void showDirectionUI() {
+    public void showDirectionUI() {
         isInDirection = true;
         searchBarView.setVisibility(View.GONE);
         searchDirectionView.setVisibility(View.VISIBLE);

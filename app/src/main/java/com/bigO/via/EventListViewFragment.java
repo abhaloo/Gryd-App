@@ -17,11 +17,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import io.mapwize.mapwizeui.MapwizeFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -29,11 +32,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class EventListViewFragment extends Fragment {
 
     private ArrayList<Place> places;
+    private ArrayList<Place> scheduleList;
 
     private RecyclerView eventRecylerView;
     private EventListViewAdapter eventRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
-    private ArrayList<Place> scheduleList;
+
+    private BottomNavigationView bottomNav;
 
     public EventListViewFragment(ArrayList<Place> places){
         this.places = places;
@@ -52,18 +57,20 @@ public class EventListViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_listview, container, false);
         setHasOptionsMenu(true);
 
+        bottomNav = this.getActivity().findViewById(R.id.bottom_nav);
+
         createRecyclerView(view);
 
         eventRecyclerListAdapter.setOnItemClickListener(new EventListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                String test = places.get(position).getName() + " was click";
+                String test = places.get(position).getName() + " was clicked";
                 Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                 toast.show();
             }
 
             @Override
-            public void onAddToScheduleClick(int position) {
+            public void onScheduleButtonClick(int position) {
                 // check if it's already there
                 boolean isScheduled = false;
                 Place clickedEvent = places.get(position);
@@ -78,15 +85,15 @@ public class EventListViewFragment extends Fragment {
                     EventDuration duration = places.get(position).getEventDuration();
 
                     if (checkCollisions(duration)){
-                        Log.i("Debug","collision");
-                        String test = places.get(position).getName() + " Colliding with the current schedule but adding it";
+                        String test = places.get(position).getName() + " has been added to your schedule but it collides with another attraction";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
                         scheduleList.add(places.get(position));
 
-                    }else {
+                    }
+                    else {
                         scheduleList.add(places.get(position));
-                        String test = places.get(position).getName() + " Should be added to Schedule";
+                        String test = places.get(position).getName() + " has been added to your schedule";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
 
@@ -94,18 +101,30 @@ public class EventListViewFragment extends Fragment {
                     eventRecyclerListAdapter.notifyItemChanged(position);
                     saveSchedule();
 
-
                 } else if(!Place.isEvent(clickedEvent.getName())){
-                    String test = "Cannot add activity " + places.get(position).getName() + " to the schedule";
+                    String test = "You can only add timed attractions to your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
 
                 } else {
-                    String test = places.get(position).getName() + " Already in the Schedule";
+                    String test = scheduleList.get(position).getName() + " was removed from your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
+
+                    scheduleList.remove(position);
+                    eventRecyclerListAdapter.notifyItemChanged(position);
+                    saveSchedule();
+
                 }
             }
+
+            @Override
+            public void onNavigateButtonClick(int position) {
+                Place clickedPlace = places.get(position);
+                io.mapwize.mapwizesdk.api.Place mapwizePlace = clickedPlace.getMapwizePlace();
+                mapSetup(mapwizePlace);
+            }
+
         });
 
         return view;
@@ -137,11 +156,20 @@ public class EventListViewFragment extends Fragment {
         });
     }
 
-    public void createRecyclerView(View view){
+    private void mapSetup(io.mapwize.mapwizesdk.api.Place mapwizePlace){
+        EventActivity activity = (EventActivity) this.getActivity();
+        MapwizeFragment mapwizeFragment = activity.getMapwizeFragment();
+        mapwizeFragment.selectPlace(mapwizePlace, true);
+        mapwizeFragment.showDirectionUI();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+        bottomNav.setSelectedItemId(R.id.map_view);
+    }
+
+    private void createRecyclerView(View view){
         eventRecylerView = view.findViewById(R.id.recycler_event_list);
         eventRecylerView.setHasFixedSize(true);
         recyclerViewManger = new LinearLayoutManager(getContext());
-        eventRecyclerListAdapter = new EventListViewAdapter(places);
+        eventRecyclerListAdapter = new EventListViewAdapter(places, scheduleList);
 
         eventRecylerView.setLayoutManager(recyclerViewManger);
         eventRecylerView.setAdapter(eventRecyclerListAdapter);
@@ -170,7 +198,7 @@ public class EventListViewFragment extends Fragment {
     }
 
 
-    public boolean checkCollisions(EventDuration duration){
+    private boolean checkCollisions(EventDuration duration){
 
         boolean collision = false;
 

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class Place {
 
+    private io.mapwize.mapwizesdk.api.Place mapwizePlace;
     private String name;
     private JSONObject placeData;
     private Bitmap icon;
@@ -12,7 +13,8 @@ public class Place {
     private boolean isEvent = true;
 
 
-    public Place(String name, JSONObject placeData, EventDuration eventDuration, boolean isEvent, Bitmap icon){
+    public Place(io.mapwize.mapwizesdk.api.Place mapwizePlace, String name, JSONObject placeData, EventDuration eventDuration, boolean isEvent, Bitmap icon){
+        this.mapwizePlace = mapwizePlace;
         this.name = name;
         this.placeData = placeData;
         this.icon = icon;
@@ -60,8 +62,7 @@ public class Place {
         return eventDuration;
     }
 
-    public boolean isEvent() {
-        return isEvent;
+    public io.mapwize.mapwizesdk.api.Place getMapwizePlace() {
+        return mapwizePlace;
     }
-
 }

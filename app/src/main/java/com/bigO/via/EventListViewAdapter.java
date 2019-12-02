@@ -3,6 +3,7 @@ package com.bigO.via;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -17,16 +18,20 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
 
     private ArrayList<Place> places;
     private ArrayList<Place> allPlaces;
+    private ArrayList<Place> scheduleList;
     private OnItemClickListener eventAdapterListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
-        void onAddToScheduleClick(int position);
+        void onScheduleButtonClick(int position);
+        void onNavigateButtonClick(int position);
     }
 
-    public EventListViewAdapter(ArrayList<Place> places){
+    public EventListViewAdapter(ArrayList<Place> places, ArrayList<Place> scheduleList){
         this.places = places;
         this.allPlaces = new ArrayList<>(places);
+
+        this.scheduleList = scheduleList;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -38,16 +43,18 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
         public TextView placeName;
         public TextView placeData;
         public TextView placeDuration;
-        public ImageView addToSchedule;
-
+        public Button scheduleButton;
+        public Button navigateButton;
 
         public EventListViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             placeIcon = itemView.findViewById(R.id.place_logo);
             placeName = itemView.findViewById(R.id.place_name);
-//            placeData = itemView.findViewById(R.id.place_data);
+            placeData = itemView.findViewById(R.id.place_data);
             placeDuration = itemView.findViewById(R.id.place_duration);
-//            addToSchedule = itemView.findViewById(R.id.add_to_schedule_image);
+            scheduleButton = itemView.findViewById(R.id.schedule_button);
+            navigateButton = itemView.findViewById(R.id.navigate_button);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,17 +68,29 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
                 }
             });
 
-//            addToSchedule.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (listener !=null) {
-//                        int position = getAdapterPosition();
-//                        if (position != RecyclerView.NO_POSITION){
-//                            listener.onAddToScheduleClick(position);
-//                        }
-//                    }
-//                }
-//            });
+            scheduleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener !=null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onScheduleButtonClick(position);
+                        }
+                    }
+                }
+            });
+
+            navigateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener !=null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onNavigateButtonClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
@@ -80,7 +99,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
     @Override
     public EventListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.place_card, parent,false);
-        EventListViewHolder eventListViewHolder = new EventListViewHolder(view,eventAdapterListener);
+        EventListViewHolder eventListViewHolder = new EventListViewHolder(view, eventAdapterListener);
         return  eventListViewHolder;
     }
 
@@ -92,6 +111,18 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
         String duration = "From:\t" + currentPlace.getEventDuration().getStartHour() + ":" + currentPlace.getEventDuration().getStartMinute()
                 + " to " + currentPlace.getEventDuration().getEndHour() + ":" + currentPlace.getEventDuration().getEndMinute();
         holder.placeDuration.setText(duration);
+        boolean isScheduled = false;
+        for (int i=0; i<scheduleList.size(); i++){
+            if (scheduleList.get(i).getName().equals(currentPlace.getName())){
+                isScheduled = true;
+            }
+        }
+        if (!isScheduled){
+            holder.scheduleButton.setText("Add to Schedule");
+        }
+        else{
+            holder.scheduleButton.setText("Remove from Schedule");
+        }
 
 //        holder.placeData.setText("Random Data");
         // TODO present the place data in a nice way!

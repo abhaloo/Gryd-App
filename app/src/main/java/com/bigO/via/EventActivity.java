@@ -17,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -83,7 +82,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
         mapwizeFragment = MapwizeFragment.newInstance(opts);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, getMapwizeFragment()).commit();
             bottomNav.setSelectedItemId(R.id.map_view);
         }
 
@@ -117,7 +116,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     public void onInformationButtonClick(MapwizeObject mapwizeObject){
         getSupportFragmentManager()
                 .beginTransaction()
-                .hide(mapwizeFragment)
+                .hide(getMapwizeFragment())
                 .commit();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -135,11 +134,10 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                 .commit();
             getSupportFragmentManager()
                 .beginTransaction()
-                .show(mapwizeFragment)
+                .show(getMapwizeFragment())
                 .commit();
         }
         else {
-
             super.onBackPressed();
         }
     }
@@ -198,7 +196,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                     boolean isEvent = Place.isEvent(name);
                     Log.i("Debug", "counter = " + counter);
                     EventDuration duration = eventDurations[counter];
-                    Place newPlace = new Place(name,placeData,duration,isEvent,icon);
+                    Place newPlace = new Place(place, name, placeData, duration, isEvent, icon);
                     places.add(newPlace);
                     counter++;
                 }
@@ -213,7 +211,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     @Override
     public void onSearchResult(io.mapwize.mapwizesdk.api.Place place, Universe universe) {
-        mapwizeFragment.onSearchResult(place,universe);
+        getMapwizeFragment().onSearchResult(place,universe);
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, place.getName());
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "place search");
@@ -222,22 +220,26 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     @Override
     public void onSearchResult(Placelist placelist) {
-        mapwizeFragment.onSearchResult(placelist);
+        getMapwizeFragment().onSearchResult(placelist);
     }
 
     @Override
     public void onSearchResult(Venue venue) {
-        mapwizeFragment.onSearchResult(venue);
+        getMapwizeFragment().onSearchResult(venue);
     }
 
     @Override
     public void onLeftButtonClick(View view) {
-        mapwizeFragment.onLeftButtonClick(view);
+        getMapwizeFragment().onLeftButtonClick(view);
     }
 
     @Override
     public void onRightButtonClick(View view) {
-        mapwizeFragment.onRightButtonClick(view);
+        getMapwizeFragment().onRightButtonClick(view);
+    }
+
+    public MapwizeFragment getMapwizeFragment() {
+        return mapwizeFragment;
     }
 
 }
