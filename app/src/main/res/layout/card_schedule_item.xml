@@ -59,6 +59,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/navigate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="Navigate"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
+            app:layout_constraintTop_toTopOf="@+id/schedule_remove"
+            app:layout_constraintStart_toEndOf="@+id/schedule_remove" />
+
         <TextView
             android:id="@+id/schedule_event_data"
             android:layout_width="0dp"

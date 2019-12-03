@@ -20,11 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import io.mapwize.mapwizesdk.map.MapOptions;
 import io.mapwize.mapwizeui.MapwizeFragment;
+import io.mapwize.mapwizeui.SearchDirectionView;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -71,12 +75,16 @@ public class EventListViewFragment extends Fragment {
 
             @Override
             public void onScheduleButtonClick(int position) {
+                loadSchedule();
+
                 // check if it's already there
                 boolean isScheduled = false;
+                int locationInSchedule = 0;
                 Place clickedEvent = places.get(position);
                 for (int i=0; i<scheduleList.size(); i++){
                     if (scheduleList.get(i).getName().equals(clickedEvent.getName())){
                         isScheduled = true;
+                        locationInSchedule = i;
                     }
                 }
 
@@ -85,19 +93,18 @@ public class EventListViewFragment extends Fragment {
                     EventDuration duration = places.get(position).getEventDuration();
 
                     if (checkCollisions(duration)){
+                        scheduleList.add(places.get(position));
                         String test = places.get(position).getName() + " has been added to your schedule but it collides with another attraction";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
-                        scheduleList.add(places.get(position));
-
                     }
                     else {
                         scheduleList.add(places.get(position));
                         String test = places.get(position).getName() + " has been added to your schedule";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
-
                     }
+                    eventRecyclerListAdapter.setScheduleList(scheduleList);
                     eventRecyclerListAdapter.notifyItemChanged(position);
                     saveSchedule();
 
@@ -107,14 +114,14 @@ public class EventListViewFragment extends Fragment {
                     toast.show();
 
                 } else {
-                    String test = scheduleList.get(position).getName() + " was removed from your schedule";
+                    scheduleList.remove(locationInSchedule);
+                    String test = places.get(position).getName() + " was removed from your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
 
-                    scheduleList.remove(position);
+                    eventRecyclerListAdapter.setScheduleList(scheduleList);
                     eventRecyclerListAdapter.notifyItemChanged(position);
                     saveSchedule();
-
                 }
             }
 
@@ -157,11 +164,18 @@ public class EventListViewFragment extends Fragment {
     }
 
     private void mapSetup(io.mapwize.mapwizesdk.api.Place mapwizePlace){
+
         EventActivity activity = (EventActivity) this.getActivity();
         MapwizeFragment mapwizeFragment = activity.getMapwizeFragment();
-        mapwizeFragment.selectPlace(mapwizePlace, true);
-        mapwizeFragment.showDirectionUI();
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mapwizePlace);
+        editor.putString("custom place", json);
+        editor.apply();
+
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
         bottomNav.setSelectedItemId(R.id.map_view);
     }
 

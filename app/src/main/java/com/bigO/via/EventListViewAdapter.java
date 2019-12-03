@@ -172,4 +172,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
         }
     };
 
+    public void setScheduleList(ArrayList<Place> scheduleList) {
+        this.scheduleList = scheduleList;
+    }
 }

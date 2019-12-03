@@ -113,14 +113,23 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     @Override
     public void onInformationButtonClick(MapwizeObject mapwizeObject){
+        Place selectedPlace = null;
+        for (int i=0; i<places.size(); i++){
+            Place currentPlace = places.get(i);
+            if (currentPlace.getName().contains(mapwizeObject.getName())){
+                selectedPlace = places.get(i);
+            }
+        }
+        EventPlaceHighlightFragment fragment = new EventPlaceHighlightFragment(selectedPlace);
         getSupportFragmentManager()
                 .beginTransaction()
                 .hide(getMapwizeFragment())
                 .commit();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, new EventPlaceHighlightFragment(), "HIGHLIGHT")
+                .add(R.id.fragment_container, fragment, "HIGHLIGHT")
                 .commit();
+
     }
 
     @Override
