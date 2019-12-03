@@ -16,18 +16,58 @@
         android:layout_marginEnd="30sp"
         android:layout_marginRight="30sp"
         android:layout_marginBottom="30sp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="5dp">
 
-        <ImageButton
-            android:id="@+id/logo"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_bottomnav_map" />
+            android:paddingBottom="30dp"
+            android:text="Featured Events"
+
+            android:textSize="18sp">
+
+        </TextView>
+
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="178dp"
+            android:scrollbars="horizontal">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/auto_show"
+                    android:layout_width="357dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/autoshow">
+
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/comingsoon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/comingsoon"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="false">
+                </ImageButton>
+
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="100dp">
 
             <ImageButton
                 android:id="@+id/search_button"

@@ -1,6 +1,7 @@
 package com.bigO.via;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,17 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 searchHandler(v);
+            }
+        });
+
+        ImageButton auto_event = (ImageButton) view.findViewById(R.id.auto_show);
+
+        auto_event.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent eventMapIntent = new Intent(getContext(), EventActivity.class);
+                startActivity(eventMapIntent);
+
             }
         });
 
