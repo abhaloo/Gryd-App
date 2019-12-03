@@ -22,7 +22,6 @@ import android.view.View;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -49,7 +48,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     private MapwizeMap mapwizeMap;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
     private final String venID = "5d86c0b3b2f753001620538d";
-    private FirebaseAnalytics mFirebaseAnalytics;
+    //private FirebaseAnalytics mFirebaseAnalytics;
     private boolean isLocationFected = false;
 
     ArrayList<Place> places;
@@ -71,7 +70,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        //mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         MapOptions opts = new MapOptions.Builder()
             .language(Locale.getDefault().getLanguage())
@@ -221,10 +220,10 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     @Override
     public void onSearchResult(io.mapwize.mapwizesdk.api.Place place, Universe universe) {
         getMapwizeFragment().onSearchResult(place,universe);
-        Bundle bundle = new Bundle();
+        /*Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, place.getName());
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "place search");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, bundle);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, bundle);*/
     }
 
     @Override
@@ -250,4 +249,10 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     public MapwizeFragment getMapwizeFragment() {
         return mapwizeFragment;
     }
+
+    
+    
+    
+
+
 }

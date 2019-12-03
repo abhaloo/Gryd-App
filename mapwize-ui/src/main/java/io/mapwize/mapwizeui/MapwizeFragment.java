@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -65,7 +66,7 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
     private static String ARG_OPTIONS = "param_options";
     private static String ARG_UI_SETTINGS = "param_ui_settings";
     private static String ARG_MAPWIZE_CONFIGURATION = "param_mapwize_configuration";
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     // Component listener
     private OnFragmentInteractionListener listener;
 
@@ -114,6 +115,8 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
         MapwizeConfiguration mapwizeConfiguration = MapwizeConfiguration.getInstance();
         bundle.putParcelable(ARG_MAPWIZE_CONFIGURATION, mapwizeConfiguration);
         mf.setArguments(bundle);
+
+
         return mf;
     }
 
@@ -332,6 +335,7 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
         else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
     @Override
@@ -564,6 +568,12 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
         bottomCardView.setContent(place, mapwizeMap.getLanguage());
         mapwizeMap.addPromotedPlace(place);
         Log.i("Debug", "Selected Place");
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, place.getName());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Place Search");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SEARCH, bundle);
+
     }
 
     /**
@@ -857,4 +867,6 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
     public interface OnVenueExitListener {
         void onVenueExit(@NonNull Venue venue);
     }
+
+
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "149058091340",
+    "firebase_url": "https://gryd-65123.firebaseio.com",
+    "project_id": "gryd-65123",
+    "storage_bucket": "gryd-65123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149058091340:android:79b6fc7cc034b7d10d37e9",
+        "android_client_info": {
+          "package_name": "io.mapwize.mapwizeui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149058091340-r5jc96h3rge8a9m0o4dit2h0dfkuh59f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy2LC3RUSIJMAn850llvPQpYJaEvU7Kb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149058091340-r5jc96h3rge8a9m0o4dit2h0dfkuh59f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
