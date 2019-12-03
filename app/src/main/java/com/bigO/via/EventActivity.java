@@ -88,25 +88,25 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment;
-                    switch (item.getItemId()) {
-                        case R.id.list_view:
-                            selectedFragment = new EventListViewFragment(places);
-                            break;
-                        case R.id.schedule_view:
-                            selectedFragment = new EventScheduleFragment();
-                            break;
-                        default:
-                            selectedFragment = getMapwizeFragment();
-                            break;
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                    return true;
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment;
+                switch (item.getItemId()) {
+                    case R.id.list_view:
+                        selectedFragment = new EventListViewFragment(places);
+                        break;
+                    case R.id.schedule_view:
+                        selectedFragment = new EventScheduleFragment();
+                        break;
+                    default:
+                        selectedFragment = getMapwizeFragment();
+                        break;
                 }
-            };
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+        };
 
     @Override
     public void onMenuButtonClick(){}

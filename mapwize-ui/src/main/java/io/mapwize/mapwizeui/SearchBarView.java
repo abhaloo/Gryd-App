@@ -272,7 +272,7 @@ public class SearchBarView extends ConstraintLayout implements MapwizeMap.OnVenu
     private void setupDefault() {
         isSearching = false;
         if (!menuHidden) {
-            leftImageView.setVisibility(View.VISIBLE);
+//            leftImageView.setVisibility(View.VISIBLE);
         }
         backImageView.setVisibility(View.GONE);
         if (mapwizeMap.getVenue() != null) {
