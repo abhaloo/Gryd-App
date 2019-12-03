@@ -24,6 +24,7 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
     public interface OnItemClickListener{
         void onItemClick(int position);
         void onRemoveClick(int position);
+        void onNavigateButtonClick(int position);
     }
 
     public static class ScheduleListViewHolder extends RecyclerView.ViewHolder {
@@ -32,6 +33,7 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
         public TextView scheduleEventTime;
         public TextView scheduleEventData;
         public Button removeButton;
+        public Button navigateButton;
 
         public ScheduleListViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -39,6 +41,7 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
             scheduleEventTime = itemView.findViewById(R.id.schedule_event_time);
             scheduleEventData = itemView.findViewById(R.id.schedule_event_data);
             removeButton = itemView.findViewById(R.id.schedule_remove);
+            navigateButton = itemView.findViewById(R.id.navigate_button);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +63,18 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
                         int pos = getAdapterPosition();
                         if(pos != RecyclerView.NO_POSITION){
                             listener.onRemoveClick(pos);
+                        }
+                    }
+                }
+            });
+
+            navigateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener !=null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onNavigateButtonClick(position);
                         }
                     }
                 }

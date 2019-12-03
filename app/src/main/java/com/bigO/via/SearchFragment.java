@@ -40,30 +40,30 @@ public class SearchFragment extends Fragment {
 
         eventList = new ArrayList<>();
 
-        String eventName = "Calgary Stampede 2020";
-        String blurb = "[PROMOTED EVENT]\n\nInformation on this event is not available yet. Please check back later!";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String eventName = "Calgary International Auto & Truck Show 2020";
+        String blurb = "[PROMOTED EVENT]\nThe leading car show in North America";
         Date startDate = new Date();
         Date endDate = new Date();
-        try {
-            startDate = dateFormat.parse("03/07/2020");
-            endDate = dateFormat.parse("12/00/2020");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        eventList.add(new Event(R.drawable.cs_image, eventName, blurb, startDate, endDate, true, false));
-
-        eventName = "Calgary International Auto & Truck Show 2020";
-        blurb = "The leading car show in North America";
-        startDate = new Date();
-        endDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
             startDate = dateFormat.parse("11/03/2020");
             endDate = dateFormat.parse("15/03/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        eventList.add(new Event(R.drawable.ciats_image, eventName, blurb, startDate, endDate, false, true));
+        eventList.add(new Event(R.drawable.ciats_image, eventName, blurb, startDate, endDate, true, true));
+
+        eventName = "Calgary Stampede 2020";
+        blurb = "Information on this event is not available yet. Please check back later!";
+        startDate = new Date();
+        endDate = new Date();
+        try {
+            startDate = dateFormat.parse("03/07/2020");
+            endDate = dateFormat.parse("12/00/2020");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        eventList.add(new Event(R.drawable.cs_image, eventName, blurb, startDate, endDate, false, false));
 
     }
 

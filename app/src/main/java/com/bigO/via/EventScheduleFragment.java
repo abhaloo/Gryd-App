@@ -13,11 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import io.mapwize.mapwizeui.MapwizeFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -30,6 +33,8 @@ public class EventScheduleFragment extends Fragment {
     private EventScheduleAdapter scheduleRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
 
+    private BottomNavigationView bottomNav;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,8 @@ public class EventScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_event_schedule, container, false);
+
+        bottomNav = this.getActivity().findViewById(R.id.bottom_nav);
 
         createRecyclerView(view);
         emptyView = view.findViewById(R.id.emptyView);
@@ -105,8 +112,31 @@ public class EventScheduleFragment extends Fragment {
                 scheduleRecyclerListAdapter.notifyItemRemoved(position);
                 saveSchedule();
             }
+
+            @Override
+            public void onNavigateButtonClick(int position) {
+                Place clickedPlace = scheduleList.get(position);
+                io.mapwize.mapwizesdk.api.Place mapwizePlace = clickedPlace.getMapwizePlace();
+                mapSetup(mapwizePlace);
+            }
         });
 
+    }
+
+    private void mapSetup(io.mapwize.mapwizesdk.api.Place mapwizePlace){
+
+        EventActivity activity = (EventActivity) this.getActivity();
+        MapwizeFragment mapwizeFragment = activity.getMapwizeFragment();
+
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mapwizePlace);
+        editor.putString("custom place", json);
+        editor.apply();
+
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+        bottomNav.setSelectedItemId(R.id.map_view);
     }
 
     private void saveSchedule() {

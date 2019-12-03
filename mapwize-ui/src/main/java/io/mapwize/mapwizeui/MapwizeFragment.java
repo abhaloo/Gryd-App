@@ -3,6 +3,7 @@ package io.mapwize.mapwizeui;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,10 +23,14 @@ import com.google.gson.reflect.TypeToken;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.mapwize.mapwizesdk.api.ApiCallback;
+import io.mapwize.mapwizesdk.api.ApiFilter;
 import io.mapwize.mapwizesdk.api.Direction;
 import io.mapwize.mapwizesdk.api.DirectionPoint;
 import io.mapwize.mapwizesdk.api.Floor;
@@ -92,6 +97,8 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
 
     //custom
     private Place customPlace = null;
+    private ArrayList<Place> customPlaceList = null;
+    private Direction customDirection = null;
 
     /**
      * Create a instance of MapwizeFragment
@@ -271,7 +278,10 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
             String json = sharedPreferences.getString("custom place", null);
             Type type = new TypeToken<Place>() {}.getType();
             customPlace = gson.fromJson(json, type);
-            if (customPlace != null){
+            json = sharedPreferences.getString("custom place list", null);
+            type = new TypeToken<ArrayList<Place>>() {}.getType();
+            customPlaceList = gson.fromJson(json, type);
+            if (customPlace != null) {
                 Log.i("Debug", "FOUND A PLACE");
                 selectPlace(getCustomPlace(), false);
                 showDirectionUI();
@@ -279,10 +289,31 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
                 editor.remove("custom place");
                 editor.apply();
             }
+            else if (customPlaceList != null){
+                mapwizeMap.getMapwizeApi().getDirection(customPlace, customPlaceList, false, new ApiCallback<Direction>() {
+                    @Override
+                    public void onSuccess(@NonNull Direction direction) {
+                        Log.i("Debug", "FOUND A DIRECTION");
+                        customDirection = direction;
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("custom place list");
+                        editor.apply();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.i("Debug", "NO DIRECTION");
+                    }
+                });
+            }
             else {
                 Log.i("Debug", "DIDN'T FIND A PLACE");
             }
         });
+
+        if (customDirection != null) {
+            setMultiPointDirection(customDirection);
+        }
 
         mainLayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
     }
@@ -599,6 +630,12 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
         }
         bottomCardView.removeContent();
         universesButton.hide();
+    }
+
+    private void setMultiPointDirection(Direction direction){
+        mapwizeMap.removeMarkers();
+        mapwizeMap.setDirection(direction);
+        showDirectionUI();
     }
 
     /**
