@@ -62,8 +62,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Add to Schedule"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
+            android:textColor="@color/colorPrimaryTextDefaultMaterialDark"
             app:layout_constraintTop_toBottomOf="@+id/place_duration"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -78,8 +77,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Navigate"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="@color/colorPrimaryTextDefaultMaterialLight"
+            android:textColor="@color/colorPrimaryTextDefaultMaterialDark"
             app:layout_constraintTop_toTopOf="@+id/schedule_button"
             app:layout_constraintStart_toEndOf="@+id/schedule_button" />
 

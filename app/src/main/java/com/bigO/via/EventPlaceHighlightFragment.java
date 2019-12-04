@@ -66,14 +66,16 @@ public class EventPlaceHighlightFragment extends Fragment {
                 if(!isScheduled && Place.isEvent(selectedPlace.getName())){
                     EventDuration duration = selectedPlace.getEventDuration();
 
-                    if (checkCollisions(duration)){
-                        scheduleList.add(selectedPlace);
+                    if (checkCollisions(selectedPlace)){
+//                        scheduleList.add(selectedPlace);
+                        addToSchedule(selectedPlace);
                         String test = selectedPlace.getName() + " has been added to your schedule but it collides with another attraction";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     else {
-                        scheduleList.add(selectedPlace);
+//                        scheduleList.add(selectedPlace);
+                        addToSchedule(selectedPlace);
                         String test = selectedPlace.getName() + " has been added to your schedule";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
@@ -82,12 +84,13 @@ public class EventPlaceHighlightFragment extends Fragment {
                     saveSchedule();
 
                 } else if(!Place.isEvent(selectedPlace.getName())){
-                    String test = "You can only add timed attractions to your schedule";
+                    String test = "This location cannot be added to your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
 
                 } else {
                     scheduleList.remove(locationInSchedule);
+                    checkAllCollisions();
                     String test = selectedPlace.getName() + " was removed from your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
@@ -122,6 +125,25 @@ public class EventPlaceHighlightFragment extends Fragment {
 
     }
 
+    private void addToSchedule(Place addedPlace){
+
+        if (addedPlace.getEventDuration().isTimed()) {
+            int i;
+            for (i = 0; i < scheduleList.size(); i++) {
+                Place currentPlace = scheduleList.get(i);
+                if (addedPlace.getEventDuration().getStartTime() <= currentPlace.getEventDuration().getStartTime()) {
+                    break;
+                }
+            }
+            scheduleList.add(i, addedPlace);
+        }
+
+        else {
+            scheduleList.add(addedPlace);
+        }
+
+    }
+
     private void loadSchedule() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
@@ -143,23 +165,36 @@ public class EventPlaceHighlightFragment extends Fragment {
         editor.apply();
     }
 
-    private boolean checkCollisions(EventDuration duration){
+    private boolean checkCollisions(Place clickedPlace){
 
+        EventDuration duration = clickedPlace.getEventDuration();
         boolean collision = false;
 
         for(Place place:scheduleList) {
             EventDuration scheduleEventDuration = place.getEventDuration();
-
-            if (
-                // starts after ends before
-                    (scheduleEventDuration.getStartHour() >= duration.getStartHour()
-                            && scheduleEventDuration.getEndHour() <= duration.getEndHour())
-                            || (scheduleEventDuration.getStartHour() <= duration.getStartHour()
-                            && scheduleEventDuration.getEndHour() >= duration.getEndHour())) {
+            if (duration.getStartTime() <= scheduleEventDuration.getEndTime() && scheduleEventDuration.getStartTime() <= duration.getEndTime() && scheduleEventDuration.isTimed()){
+                place.setHasCollision(true);
+                clickedPlace.setHasCollision(true);
                 collision = true;
             }
         }
         return collision;
+    }
+
+    private void checkAllCollisions(){
+        for (Place place : scheduleList) {
+            place.setHasCollision(false);
+            EventDuration duration = place.getEventDuration();
+            for (Place anotherPlace : scheduleList) {
+                EventDuration anotherDuration = anotherPlace.getEventDuration();
+                if (!place.getName().equals(anotherPlace.getName())){
+                    if (duration.getStartTime() <= anotherDuration.getEndTime() && anotherDuration.getStartTime() <= duration.getEndTime() && anotherDuration.isTimed()){
+                        place.setHasCollision(true);
+                        anotherPlace.setHasCollision(true);
+                    }
+                }
+            }
+        }
     }
 
 }

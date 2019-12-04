@@ -167,6 +167,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
         MapboxMap mapboxMap = this.mapwizeMap.getMapboxMap();
         mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
         mapboxMap.setMinZoomPreference(16);
+        mapboxMap.setMaxZoomPreference(15);
         this.mapwizeMap.setFollowUserMode(FollowUserMode.FOLLOW_USER);
 
         if(!isLocationFected) {
@@ -203,7 +204,13 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                     JSONObject placeData = place.getData();
                     boolean isEvent = Place.isEvent(name);
                     Log.i("Debug", "counter = " + counter);
-                    EventDuration duration = eventDurations[counter];
+                    EventDuration duration;
+                    if (counter < 4) {
+                        duration = eventDurations[counter];
+                    }
+                    else {
+                        duration = new EventDuration();
+                    }
                     Place newPlace = new Place(place, name, placeData, duration, isEvent, icon);
                     places.add(newPlace);
                     counter++;
