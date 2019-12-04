@@ -1,13 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Privacy Policy"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/heading_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy Policy Of GRYD"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="hello" />
+
+            <TextView
+                android:id="@+id/heading_info_collection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Information Collection and Use"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_info_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"/>
+
+            <TextView
+                android:id="@+id/heading_service_provider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Service Providers"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_service_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp" />
+
+            <TextView
+                android:id="@+id/heading_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Security"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_security"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"/>
+
+            <TextView
+                android:id="@+id/heading_links"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Links to Other Sites"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_links"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp" />
+
+            <TextView
+                android:id="@+id/heading_change"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Changes to This Privacy Policy"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp" />
+
+            <TextView
+                android:id="@+id/heading_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/policy_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"/>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
