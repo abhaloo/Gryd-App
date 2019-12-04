@@ -23,7 +23,9 @@ import com.google.gson.reflect.TypeToken;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import io.mapwize.mapwizesdk.map.MapOptions;
@@ -92,14 +94,14 @@ public class EventListViewFragment extends Fragment {
                 if(!isScheduled && Place.isEvent(clickedEvent.getName())){
                     EventDuration duration = places.get(position).getEventDuration();
 
-                    if (checkCollisions(duration)){
-                        scheduleList.add(places.get(position));
+                    if (checkCollisions(clickedEvent)){
+                        addToSchedule(places.get(position));
                         String test = places.get(position).getName() + " has been added to your schedule but it collides with another attraction";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                     else {
-                        scheduleList.add(places.get(position));
+                        addToSchedule(places.get(position));
                         String test = places.get(position).getName() + " has been added to your schedule";
                         Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                         toast.show();
@@ -109,12 +111,13 @@ public class EventListViewFragment extends Fragment {
                     saveSchedule();
 
                 } else if(!Place.isEvent(clickedEvent.getName())){
-                    String test = "You can only add timed attractions to your schedule";
+                    String test = "This location cannot be added to your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
 
                 } else {
                     scheduleList.remove(locationInSchedule);
+                    checkAllCollisions();
                     String test = places.get(position).getName() + " was removed from your schedule";
                     Toast toast = Toast.makeText(getContext(), test, Toast.LENGTH_SHORT);
                     toast.show();
@@ -177,6 +180,7 @@ public class EventListViewFragment extends Fragment {
 
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
         bottomNav.setSelectedItemId(R.id.map_view);
+
     }
 
     private void createRecyclerView(View view){
@@ -187,6 +191,25 @@ public class EventListViewFragment extends Fragment {
 
         eventRecylerView.setLayoutManager(recyclerViewManger);
         eventRecylerView.setAdapter(eventRecyclerListAdapter);
+
+    }
+
+    private void addToSchedule(Place addedPlace){
+
+        if (addedPlace.getEventDuration().isTimed()) {
+            int i;
+            for (i = 0; i < scheduleList.size(); i++) {
+                Place currentPlace = scheduleList.get(i);
+                if (currentPlace.getEventDuration().isTimed() && addedPlace.getEventDuration().getStartTime() <= currentPlace.getEventDuration().getStartTime()) {
+                    break;
+                }
+            }
+            scheduleList.add(i, addedPlace);
+        }
+
+        else {
+            scheduleList.add(addedPlace);
+        }
 
     }
 
@@ -212,23 +235,36 @@ public class EventListViewFragment extends Fragment {
     }
 
 
-    private boolean checkCollisions(EventDuration duration){
+    private boolean checkCollisions(Place clickedPlace){
 
+        EventDuration duration = clickedPlace.getEventDuration();
         boolean collision = false;
 
         for(Place place:scheduleList) {
             EventDuration scheduleEventDuration = place.getEventDuration();
-
-            if (
-                    // starts after ends before
-                    (scheduleEventDuration.getStartHour() >= duration.getStartHour()
-                    && scheduleEventDuration.getEndHour() <= duration.getEndHour())
-            || (scheduleEventDuration.getStartHour() <= duration.getStartHour()
-                            && scheduleEventDuration.getEndHour() >= duration.getEndHour())) {
+            if (duration.getStartTime() <= scheduleEventDuration.getEndTime() && scheduleEventDuration.getStartTime() <= duration.getEndTime() && scheduleEventDuration.isTimed()){
+                place.setHasCollision(true);
+                clickedPlace.setHasCollision(true);
                 collision = true;
             }
         }
         return collision;
+    }
+
+    private void checkAllCollisions(){
+        for (Place place : scheduleList) {
+            place.setHasCollision(false);
+            EventDuration duration = place.getEventDuration();
+            for (Place anotherPlace : scheduleList) {
+                EventDuration anotherDuration = anotherPlace.getEventDuration();
+                if (!place.getName().equals(anotherPlace.getName())){
+                    if (duration.getStartTime() <= anotherDuration.getEndTime() && anotherDuration.getStartTime() <= duration.getEndTime() && anotherDuration.isTimed()){
+                        place.setHasCollision(true);
+                        anotherPlace.setHasCollision(true);
+                    }
+                }
+            }
+        }
     }
 
 }

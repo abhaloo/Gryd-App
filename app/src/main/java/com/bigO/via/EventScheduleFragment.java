@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +22,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import io.mapwize.mapwizeui.MapwizeFragment;
 
@@ -30,6 +35,7 @@ public class EventScheduleFragment extends Fragment {
 
     private RecyclerView scheduleRecylerView;
     private TextView emptyView;
+    private Button navigateToAllButton;
     private EventScheduleAdapter scheduleRecyclerListAdapter;
     private RecyclerView.LayoutManager recyclerViewManger;
 
@@ -50,12 +56,20 @@ public class EventScheduleFragment extends Fragment {
 
         createRecyclerView(view);
         emptyView = view.findViewById(R.id.emptyView);
+        navigateToAllButton = view.findViewById(R.id.navigate_to_all);
 
         if (scheduleList.isEmpty()) {
             emptyView.setVisibility(View.VISIBLE);
         }
         else {
             emptyView.setVisibility(View.GONE);
+        }
+
+        if (scheduleList.size() >= 3) {
+            navigateToAllButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            navigateToAllButton.setVisibility(View.GONE);
         }
 
         scheduleRecyclerListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -80,6 +94,14 @@ public class EventScheduleFragment extends Fragment {
 
             void checkEmpty() {
                 emptyView.setVisibility(scheduleRecyclerListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                navigateToAllButton.setVisibility(scheduleRecyclerListAdapter.getItemCount() >= 3 ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        navigateToAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                multiPointMapSetup();
             }
         });
 
@@ -109,7 +131,9 @@ public class EventScheduleFragment extends Fragment {
                 toast.show();
 
                 scheduleList.remove(position);
+                checkAllCollisions();
                 scheduleRecyclerListAdapter.notifyItemRemoved(position);
+                scheduleRecyclerListAdapter.notifyItemRangeChanged(0, scheduleList.size());
                 saveSchedule();
             }
 
@@ -120,6 +144,31 @@ public class EventScheduleFragment extends Fragment {
                 mapSetup(mapwizePlace);
             }
         });
+
+        ItemTouchHelper ith = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+
+                int positionDragged = dragged.getAdapterPosition();
+                int positionTarget = target.getAdapterPosition();
+
+                if (!(scheduleList.get(positionDragged).getEventDuration().isTimed())){
+                    Collections.swap(scheduleList, positionDragged, positionTarget);
+                    scheduleRecyclerListAdapter.notifyItemMoved(positionDragged, positionTarget);
+                }
+
+                saveSchedule();
+
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        });
+
+        ith.attachToRecyclerView(scheduleRecylerView);
 
     }
 
@@ -133,6 +182,26 @@ public class EventScheduleFragment extends Fragment {
         Gson gson = new Gson();
         String json = gson.toJson(mapwizePlace);
         editor.putString("custom place", json);
+        editor.apply();
+
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
+        bottomNav.setSelectedItemId(R.id.map_view);
+    }
+
+    private void multiPointMapSetup(){
+
+        EventActivity activity = (EventActivity) this.getActivity();
+        MapwizeFragment mapwizeFragment = activity.getMapwizeFragment();
+
+        ArrayList<io.mapwize.mapwizesdk.api.Place> customPlaceList = new ArrayList<>();
+        for (int i=0; i < scheduleList.size(); i++){
+            customPlaceList.add(scheduleList.get(i).getMapwizePlace());
+        }
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(customPlaceList);
+        editor.putString("custom place list", json);
         editor.apply();
 
         this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mapwizeFragment).commit();
@@ -157,6 +226,22 @@ public class EventScheduleFragment extends Fragment {
 
         if (scheduleList == null) {
             scheduleList = new ArrayList<>();
+        }
+    }
+
+    private void checkAllCollisions(){
+        for (Place place : scheduleList) {
+            place.setHasCollision(false);
+            EventDuration duration = place.getEventDuration();
+            for (Place anotherPlace : scheduleList) {
+                EventDuration anotherDuration = anotherPlace.getEventDuration();
+                if (!place.getName().equals(anotherPlace.getName())){
+                    if (duration.getStartTime() <= anotherDuration.getEndTime() && anotherDuration.getStartTime() <= duration.getEndTime() && anotherDuration.isTimed()){
+                        place.setHasCollision(true);
+                        anotherPlace.setHasCollision(true);
+                    }
+                }
+            }
         }
     }
 

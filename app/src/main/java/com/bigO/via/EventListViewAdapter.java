@@ -108,8 +108,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
         Place currentPlace = places.get(position);
         holder.placeIcon.setImageBitmap(currentPlace.getIcon());
         holder.placeName.setText(currentPlace.getName());
-        String duration = "From:\t" + currentPlace.getEventDuration().getStartHour() + ":" + currentPlace.getEventDuration().getStartMinute()
-                + " to " + currentPlace.getEventDuration().getEndHour() + ":" + currentPlace.getEventDuration().getEndMinute();
+        String duration = currentPlace.getEventDuration().getDurationAsString();
         holder.placeDuration.setText(duration);
         boolean isScheduled = false;
         for (int i=0; i<scheduleList.size(); i++){

@@ -11,6 +11,7 @@ public class Place {
     private Bitmap icon;
     private EventDuration eventDuration;
     private boolean isEvent = true;
+    private boolean hasCollision = false;
 
 
     public Place(io.mapwize.mapwizesdk.api.Place mapwizePlace, String name, JSONObject placeData, EventDuration eventDuration, boolean isEvent, Bitmap icon){
@@ -25,6 +26,10 @@ public class Place {
     public String unwrapJson(JSONObject data){
         // TODO have a method to unwrap the JSON Object into String
         return "";
+    }
+
+    public io.mapwize.mapwizesdk.api.Place getMapwizePlace() {
+        return mapwizePlace;
     }
 
     public String getName() {
@@ -43,11 +48,22 @@ public class Place {
         return newIcon;
     }
 
+    public EventDuration getEventDuration() {
+        return eventDuration;
+    }
+
+    public boolean hasCollision() {
+        return hasCollision;
+    }
+
+    public void setHasCollision(boolean hasCollision) {
+        this.hasCollision = hasCollision;
+    }
 
     public static boolean isEvent(String eventName) {
         boolean is_Event = true;
         String name = eventName.toLowerCase();
-        String [] notEventArray = {"exit","toilet","desk","mcdonalds","wendy's","kfc","test"};
+        String [] notEventArray = {"exit","toilet","desk","test"};
 
         for(String blacklist: notEventArray){
             if(name.contains(blacklist)){
@@ -56,13 +72,5 @@ public class Place {
         }
 
         return is_Event;
-    }
-
-    public EventDuration getEventDuration() {
-        return eventDuration;
-    }
-
-    public io.mapwize.mapwizesdk.api.Place getMapwizePlace() {
-        return mapwizePlace;
     }
 }

@@ -293,14 +293,25 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
                 editor.apply();
             }
             else if (customPlaceList != null){
-                mapwizeMap.getMapwizeApi().getDirection(customPlace, customPlaceList, false, new ApiCallback<Direction>() {
+                Place startPlace = customPlaceList.remove(0);
+                Place endPlace = customPlaceList.remove(customPlaceList.size()-1);
+                ArrayList<Place> waypoints = customPlaceList;
+                mapwizeMap.getMapwizeApi().getDirection(startPlace, endPlace, waypoints, false, true, new ApiCallback<Direction>() {
                     @Override
                     public void onSuccess(@NonNull Direction direction) {
                         Log.i("Debug", "FOUND A DIRECTION");
-                        customDirection = direction;
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.remove("custom place list");
                         editor.apply();
+                        customDirection = direction;
+                        Handler mainHandler = new Handler(Looper.getMainLooper());
+                        Runnable myRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                setMultiPointDirection(customDirection);
+                            }
+                        };
+                        mainHandler.post(myRunnable);
                     }
 
                     @Override
@@ -313,10 +324,6 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
                 Log.i("Debug", "DIDN'T FIND A PLACE");
             }
         });
-
-        if (customDirection != null) {
-            setMultiPointDirection(customDirection);
-        }
 
         mainLayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
     }
@@ -643,9 +650,10 @@ public class MapwizeFragment extends Fragment implements CompassView.OnCompassCl
     }
 
     private void setMultiPointDirection(Direction direction){
+        Log.i("Debug", "Setting multi-direction");
         mapwizeMap.removeMarkers();
         mapwizeMap.setDirection(direction);
-        showDirectionUI();
+//        showDirectionUI();
     }
 
     /**

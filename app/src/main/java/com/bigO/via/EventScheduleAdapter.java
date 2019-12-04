@@ -1,5 +1,6 @@
 package com.bigO.via;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -98,10 +100,15 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
     public void onBindViewHolder(@NonNull ScheduleListViewHolder holder, int position) {
         Place currentScheduleElement = scheduleList.get(position);
         holder.scheduleEventName.setText(currentScheduleElement.getName());
-        String time = "From:\t" + currentScheduleElement.getEventDuration().getStartHour() + ":" + currentScheduleElement.getEventDuration().getStartMinute()
-                + " to " + currentScheduleElement.getEventDuration().getEndHour() + ":" + currentScheduleElement.getEventDuration().getEndMinute();
+        String time = currentScheduleElement.getEventDuration().getDurationAsString();
         holder.scheduleEventTime.setText(time);
         holder.scheduleEventData.setText("Random Data");
+        if (currentScheduleElement.hasCollision()){
+            holder.itemView.setBackgroundColor(Color.parseColor("#FF9999"));
+        }
+        else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
     }
 
     @Override
