@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         sRecyclerView = view.findViewById(R.id.searchRecyclerView);
-        sLayoutManager = new LinearLayoutManager(this.getActivity());
+        sLayoutManager = new LinearLayoutManager(this.getActivity(),LinearLayoutManager.VERTICAL, false);
         sAdapter = new SearchAdapter(eventList, bookmarkList);
 
         sRecyclerView.setHasFixedSize(true);

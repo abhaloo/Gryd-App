@@ -66,7 +66,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
-        setTitle("Calgary International Auto & Truck Show");
+        setTitle("Calgary Auto Show");
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
