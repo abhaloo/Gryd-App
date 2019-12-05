@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F23196</color>
-    <color name="colorPrimaryDark">#711083</color>
-    <color name="colorAccent">#C51586</color>
-    <color name="alphaMainColor">#11C51586</color>
+    <color name="mapwize_main_color">#5889A2</color>
+    <color name="alphaMainColor">#9AC0DB</color>
 </resources>

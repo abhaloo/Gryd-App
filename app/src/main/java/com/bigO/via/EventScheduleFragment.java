@@ -193,14 +193,23 @@ public class EventScheduleFragment extends Fragment {
         EventActivity activity = (EventActivity) this.getActivity();
         MapwizeFragment mapwizeFragment = activity.getMapwizeFragment();
 
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("starting place", null);
+        Type type = new TypeToken<io.mapwize.mapwizesdk.api.Place>() {}.getType();
+        io.mapwize.mapwizesdk.api.Place startingPlace = gson.fromJson(json, type);
+
         ArrayList<io.mapwize.mapwizesdk.api.Place> customPlaceList = new ArrayList<>();
+        if (startingPlace != null){
+            customPlaceList.add(startingPlace);
+        }
         for (int i=0; i < scheduleList.size(); i++){
             customPlaceList.add(scheduleList.get(i).getMapwizePlace());
         }
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared preferences", MODE_PRIVATE);
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(customPlaceList);
+        gson = new Gson();
+        json = gson.toJson(customPlaceList);
         editor.putString("custom place list", json);
         editor.apply();
 

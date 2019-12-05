@@ -8,11 +8,13 @@
 
         <CheckBoxPreference
             app:key="listViewDefault"
-            app:title="Make List View Default"/>
+            app:title="Make List View Default"
+            app:summary="Select this option if you'd like to search for events using a list view"/>
 
         <SwitchPreferenceCompat
             app:key="notifications"
             app:title="Enable Notifications"
+            app:enabled="false"
             app:summary="If enabled, we'll notify you if a timed attraction on your schedule is about to begin"/>
 
     </PreferenceCategory>
@@ -28,6 +30,7 @@
         <SwitchPreferenceCompat
             app:key="locationTracking"
             app:title="Allow Location Tracking"
+            app:enabled="false"
             app:summary="Tracking your location at events lets us help event organizers optimize routes and smoothen your day"/>
 
     </PreferenceCategory>

@@ -1,6 +1,7 @@
 package com.bigO.via;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,10 +12,10 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.view.View;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -46,6 +48,12 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     private MapwizeFragment mapwizeFragment;
     private MapwizeMap mapwizeMap;
+
+    private BottomNavigationView bottomNav;
+
+    private SharedPreferences sharedPreferences;
+    private io.mapwize.mapwizesdk.api.Place startingPlace;
+
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 0;
     private final String venID = "5d86c0b3b2f753001620538d";
     //private FirebaseAnalytics mFirebaseAnalytics;
@@ -53,6 +61,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
 
     ArrayList<Place> places;
     private EventDuration[] eventDurations = HardCodedData.getEventTimeData();
+    private String[] placeBlurbs = HardCodedData.getPlaceBlurbs();
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(51.081066106290976, -114.13709700107574);
     private static final LatLng BOUND_CORNER_SE = new LatLng(51.079485532515136, -114.13504242897035);
@@ -66,9 +75,11 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         setTitle("Calgary Auto Show");
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(bottomNavListener);
         //mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -91,6 +102,7 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment;
+                Boolean makeTransition = true;
                 switch (item.getItemId()) {
                     case R.id.list_view:
                         selectedFragment = new EventListViewFragment(places);
@@ -106,6 +118,10 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                 return true;
             }
         };
+
+    private void resetBottomNav() {
+        bottomNav.setSelectedItemId(R.id.map_view);
+    }
 
     @Override
     public void onMenuButtonClick(){}
@@ -199,6 +215,15 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                 places = new ArrayList<>();
                 int counter = 0;
                 for(io.mapwize.mapwizesdk.api.Place place: venplaces) {
+                    if (place.getName().toLowerCase().equals("south entrance/exit")){
+                        startingPlace = place;
+                        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(startingPlace);
+                        editor.putString("starting place", json);
+                        editor.apply();
+                    }
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
@@ -207,13 +232,23 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                     }
                     boolean isEvent = Place.isEvent(name);
                     EventDuration duration;
+                    String placeBlurb;
                     if (counter < 4) {
                         duration = eventDurations[counter];
                     }
                     else {
                         duration = new EventDuration();
                     }
-                    Place newPlace = new Place(place, name, placeData, duration, isEvent, icon);
+                    if (counter < 14) {
+                        placeBlurb = placeBlurbs[counter];
+                    }
+                    else if (counter < 20) {
+                        placeBlurb = "Food stall";
+                    }
+                    else {
+                        placeBlurb = "-";
+                    }
+                    Place newPlace = new Place(place, name, placeBlurb, duration, isEvent, icon);
                     places.add(newPlace);
                     counter++;
                 }

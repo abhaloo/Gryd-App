@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         eventList = new ArrayList<>();
 
         String eventName = "Calgary Auto Show 2020";
-        String blurb = "The leading car show in North America";
+        String blurb = "The leading car show in North America, featuring the best cars, trucks and motorcycles";
         Date startDate = new Date();
         Date endDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

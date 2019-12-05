@@ -102,7 +102,7 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
         holder.scheduleEventName.setText(currentScheduleElement.getName());
         String time = currentScheduleElement.getEventDuration().getDurationAsString();
         holder.scheduleEventTime.setText(time);
-        holder.scheduleEventData.setText("Random Data");
+        holder.scheduleEventData.setText(currentScheduleElement.getPlaceBlurb());
         if (currentScheduleElement.hasCollision()){
             holder.itemView.setBackgroundColor(Color.parseColor("#FF9999"));
         }

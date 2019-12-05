@@ -1,35 +1,25 @@
 package com.bigO.via;
 
 import android.graphics.Bitmap;
-import org.json.JSONObject;
 
 public class Place {
 
     private io.mapwize.mapwizesdk.api.Place mapwizePlace;
     private String name;
-    private JSONObject placeData;
+    private String blurb;
     private Bitmap icon;
     private EventDuration eventDuration;
     private boolean isEvent = true;
     private boolean hasCollision = false;
 
 
-    public Place(io.mapwize.mapwizesdk.api.Place mapwizePlace, String name, JSONObject placeData, EventDuration eventDuration, boolean isEvent, Bitmap icon){
+    public Place(io.mapwize.mapwizesdk.api.Place mapwizePlace, String name, String placeBlurb, EventDuration eventDuration, boolean isEvent, Bitmap icon){
         this.mapwizePlace = mapwizePlace;
         this.name = name;
-        this.placeData = placeData;
+        this.blurb = placeBlurb;
         this.icon = icon;
         this.isEvent = isEvent;
         this.eventDuration = eventDuration;
-    }
-
-    public String unwrapJson(){
-        if (placeData != null) {
-            return placeData.toString();
-        }
-        else {
-            return "-";
-        }
     }
 
     public io.mapwize.mapwizesdk.api.Place getMapwizePlace() {
@@ -40,8 +30,8 @@ public class Place {
         return name;
     }
 
-    public JSONObject getPlaceData() {
-        return placeData;
+    public String getPlaceBlurb() {
+        return blurb;
     }
 
     // rescale it and return

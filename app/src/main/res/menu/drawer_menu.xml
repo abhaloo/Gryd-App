@@ -17,10 +17,6 @@
             android:icon="@drawable/ic_navdrawer_bookmarks"
             android:title="Bookmarks" />
         <item
-            android:id="@+id/schedules"
-            android:icon="@drawable/ic_navdrawer_schedules"
-            android:title="Schedules" />
-        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_navdrawer_settings"
             android:title="Settings" />

@@ -40,8 +40,8 @@ public class SearchFragment extends Fragment {
 
         eventList = new ArrayList<>();
 
-        String eventName = "Calgary International Auto & Truck Show 2020";
-        String blurb = "[PROMOTED EVENT]\nThe leading car show in North America";
+        String eventName = "Calgary Auto Show 2020";
+        String blurb = "The leading car show in North America";
         Date startDate = new Date();
         Date endDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

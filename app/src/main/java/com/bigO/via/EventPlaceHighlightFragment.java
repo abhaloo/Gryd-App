@@ -102,8 +102,8 @@ public class EventPlaceHighlightFragment extends Fragment {
         });
 
         placeName.setText(selectedPlace.getName());
-        placeTimes.setText("-");
-        placeDescription.setText("-");
+        placeTimes.setText(selectedPlace.getEventDuration().getDurationAsString());
+        placeDescription.setText(selectedPlace.getPlaceBlurb());
 
         return view;
     }

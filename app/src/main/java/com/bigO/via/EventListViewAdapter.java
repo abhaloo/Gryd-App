@@ -122,7 +122,7 @@ public class EventListViewAdapter extends RecyclerView.Adapter<EventListViewAdap
         else{
             holder.scheduleButton.setText("Remove from Schedule");
         }
-//        holder.placeData.setText(currentPlace.unwrapJson());
+        holder.placeData.setText(currentPlace.getPlaceBlurb());
 
     }
 

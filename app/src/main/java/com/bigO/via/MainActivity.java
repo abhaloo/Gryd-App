@@ -108,10 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 selectedFragment = new BookmarksFragment();
                 toolbar.setTitle("Bookmarks");
                 break;
-            case R.id.schedules:
-                selectedFragment = new SchedulesFragment();
-                toolbar.setTitle("Schedules");
-                break;
             case R.id.settings:
                 selectedFragment = new SettingsFragment();
                 toolbar.setTitle("Settings");
