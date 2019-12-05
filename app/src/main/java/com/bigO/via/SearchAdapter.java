@@ -105,12 +105,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchView
         holder.eventNameView.setText(currentEvent.getEventName());
         holder.eventDateView.setText(currentEvent.getDatesAsString());
         holder.eventBlurbView.setText(currentEvent.getBlurb());
-        if (currentEvent.isPromoted()){
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorAccent));
-        }
-        else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
-        }
+        holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+
         boolean isBookmarked = false;
         for (int i=0; i<bookmarkList.size(); i++){
             if (bookmarkList.get(i).getEventName().equals(currentEvent.getEventName())){
