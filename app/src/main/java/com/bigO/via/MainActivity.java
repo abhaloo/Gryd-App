@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 tag = "HOME";
                 selectedFragment = new HomeFragment(mapwizeFragment);
-                toolbar.setTitle("Via");
+                toolbar.setTitle(R.string.app_name);
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, tag).commit();
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(mapwizeFragment), "HOME").commit();
                 navigationView.setCheckedItem(R.id.home);
-                toolbar.setTitle("Via");
+                toolbar.setTitle(R.string.app_name);
             }
         }
     }

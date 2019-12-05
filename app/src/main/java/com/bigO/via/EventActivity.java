@@ -202,8 +202,10 @@ public class EventActivity extends AppCompatActivity implements MapwizeFragment.
                     String name = place.getName();
                     Bitmap icon = place.getIcon();
                     JSONObject placeData = place.getData();
+                    if (placeData != null){
+                        Log.i("Debug", "Place Data" + placeData.toString());
+                    }
                     boolean isEvent = Place.isEvent(name);
-                    Log.i("Debug", "counter = " + counter);
                     EventDuration duration;
                     if (counter < 4) {
                         duration = eventDurations[counter];

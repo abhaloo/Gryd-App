@@ -44,7 +44,7 @@
             app:layout_constraintEnd_toStartOf="@+id/place_logo" />
 
         <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:id="@+id/schedule_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,13 +53,12 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Remove from schedule"
-            android:textColor="@color/colorPrimaryTextDefaultMaterialDark"
             app:layout_constraintTop_toBottomOf="@+id/schedule_event_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
-            style="@style/Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:id="@+id/navigate_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,7 +67,6 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Navigate"
-            android:textColor="@color/colorPrimaryTextDefaultMaterialDark"
             app:layout_constraintTop_toTopOf="@+id/schedule_remove"
             app:layout_constraintStart_toEndOf="@+id/schedule_remove" />
 

@@ -23,9 +23,13 @@ public class Place {
         this.eventDuration = eventDuration;
     }
 
-    public String unwrapJson(JSONObject data){
-        // TODO have a method to unwrap the JSON Object into String
-        return "";
+    public String unwrapJson(){
+        if (placeData != null) {
+            return placeData.toString();
+        }
+        else {
+            return "-";
+        }
     }
 
     public io.mapwize.mapwizesdk.api.Place getMapwizePlace() {
@@ -42,9 +46,7 @@ public class Place {
 
     // rescale it and return
     public Bitmap getIcon() {
-//        profileImage.setImageBitmap(Bitmap.createScaledBitmap(b, 120, 120, false));
         Bitmap newIcon = Bitmap.createScaledBitmap(this.icon, 120, 120, false);
-
         return newIcon;
     }
 

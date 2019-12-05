@@ -59,7 +59,7 @@ public class SearchFragment extends Fragment {
         endDate = new Date();
         try {
             startDate = dateFormat.parse("03/07/2020");
-            endDate = dateFormat.parse("12/00/2020");
+            endDate = dateFormat.parse("12/07/2020");
         } catch (ParseException e) {
             e.printStackTrace();
         }
