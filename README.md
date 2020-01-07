@@ -1,5 +1,6 @@
 # Via
 Designed by : Adeel Bhaloo, Masroor Syed, Hamzah 
+
 CPSC 405 Software Entreprenuership 
 
 An android app that allows businesses to host custom maps of their events fully fitted with navigational and promotional capacilities.    
