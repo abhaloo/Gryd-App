@@ -1,10 +1,13 @@
 # Via
-Designed by : Adeel Bhaloo, Masroor Syed, Hamzah 
+Designed by : Adeel Bhaloo, Masroor Syed, HamzahX 
 
 CPSC 405 Software Entreprenuership 
 
-An android app that allows businesses to host custom maps of their events fully fitted with navigational and promotional capabilities.    
-Designed for events with multiple vendors such as Calgary Stampede, Car shows, Food markets etc..
+Ever attended an event like Calgary Stampede, and have no idea what's avaliable and where to begin your day, or even worse, found youself completely lost? 
+
+Via is an android app that allows businesses to host custom maps of their events fully fitted with navigational and scheduling capabilities that event attendees can use to find their way and plan their day.    
+
+It is desgined to host multiple events, each with multiple vendors, giving it significant use cases such as Calgary Stampede, Car shows, Food markets etc..
 
 The app utilizes the Mapwize api for routing and vendor promotion. This functionality is encompassed withiin the mapwize-ui module.
 
