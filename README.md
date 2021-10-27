@@ -1,5 +1,5 @@
 # Gryd (formerly known as Via)
-Designed by : Adeel Bhaloo, Masroor Syed, HamzahX 
+Developed by : Masroor Syed, HamzahX, Adeel Bhaloo
 
 CPSC 405 Software Entreprenuership 
 
